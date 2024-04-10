@@ -38,10 +38,18 @@ export class Game{
     this.players = this.#shuffle(this.players).slice(0, this.numberOfPlayers);
   }
 
+  gamePlay(){
+    // start
+
+    // skip
+  }
+
   // Passage au tour suivant
   skipturn(){
     this.turnLeft --;
-    if (this.turnLeft == 0){
+
+    // verifier condition de fin de partie
+    if (this.turnLeft == 0 || this.playersLeft.length == 1){
       this.endGame();
     }
   }
@@ -51,16 +59,14 @@ export class Game{
     
     // Appel des players (ordre aléatoire)
     this.#shuffle(this.players).forEach(player => {
+    console.log(`C'est à ${player.player_name} de jouer :`);
       // action
     });;
-
-  }
-
-  endTurn(){
-
   }
 
   endGame(){
+    // joueurs restants gagnent
+    this.playersLeft.forEach(player => { player.status = 'winner'});
 
   }
 
