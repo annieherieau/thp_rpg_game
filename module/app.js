@@ -7,7 +7,7 @@ export function launchApp(){
   // document.getElementById('settings').classList.toggle('collapse');
   // rpgGame.getInput(document.getElementById("userInput").value);
   const rpgGame = new Game();
- 
+  rpgGame.startGame();
 }
 
 // app();
