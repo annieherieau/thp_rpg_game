@@ -127,13 +127,13 @@ export class Game {
       // P vs P : le user choisi chaque joueur
       case 1:
         for (let i = 0; i < this.numberOfPlayers; i++) {
-          this.newHumanPlayer()      
+          players.push(this.newHumanPlayer());    
         }
         break;
       // P vs AI : le user choisi 1 joueur et AI le reste
       case 2:
+        players = this.#shuffle(Game.newAiPlayers()).slice(0, number-1);
         players.push(this.newHumanPlayer());
-        players.concat(this.#shuffle(Game.newAiPlayers()).slice(0, number-1));
         break;
       // AI vs AI: création auto des joueurs
       default:
@@ -146,14 +146,10 @@ export class Game {
     return players;
   }
 
-  // nouveau joueur humain
-  newHumanPlayer(){
-    return new this.setPlayerClass()(this.setPlayerName, false);
-  }
-
   // sélection de la classe joueur human
   setPlayerClass(){
     let userInput = '';
+    // création du menu
     let menu = Game.defaultPlayers.map((player, i) => {
       return `${i+1}. ${player.class.name}`;
     });
@@ -164,11 +160,24 @@ export class Game {
         )
       );
     }
+    return Game.defaultPlayers[userInput-1].class;
   }
+
+  // nouveau joueur humain
+  newHumanPlayer(){
+    let playerClass = this.setPlayerClass();
+
+    return new playerClass(this.setPlayerName(), false);
+  }
+  
 
   // choix du nom Joueur humain
   setPlayerName(){
-
+    let userInput = '';
+    while (!userInput){
+      userInput = window.prompt("Nom du joueur:");
+    }
+    return userInput
   }
   // début de la partie
   startGame() {
