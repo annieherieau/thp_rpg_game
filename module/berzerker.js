@@ -19,6 +19,11 @@ export class Berzerker extends Character {
 
   specialAttack(victim){
     if (this.canAttack(victim)){
+      // ne peut pas se tuer...
+      if (this.hp == 1){
+        console.log(`Attaque impossible: ${this.player_name} va se se tuer !!`)
+        return false;
+      }
       this.hp -= 1;
       this.dmg += 1;
       this.dmg_spe = this.dmg;
