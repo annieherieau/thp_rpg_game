@@ -1,7 +1,14 @@
 import { Berzerker } from "./berzerker.js";
 import { Game } from "./game.js";
 
-const rpgGame = new Game();
-rpgGame.startGame();
+function app(){
+  const rpgGame = new Game();
 
-console.log(rpgGame.players);
+  rpgGame.watchStats();
+
+  // console.log(this.playersLeft.sort(player => {
+  //   player.hp;
+  // })[0]);
+}
+
+app();
