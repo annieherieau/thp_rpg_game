@@ -8,7 +8,7 @@ export class Character {
   }
 
   // fields des instances
-  constructor(playerName, ai) {
+  constructor(playerName) {
     this.player_name = playerName ? playerName : Character.playerName(); // nom du joueur
     this.class_name = Character.name;
     this.death_hp = 20; // hp récupéré lors qu'on tue un adversaire
@@ -22,7 +22,7 @@ export class Character {
     this.dmg_spe = 5; // damage for special attack
     this.mana_cost = 10; // mana cost for make special attack
     this.self_hp = 0; // hp plus : gain de vie du spécial
-    this.ai = ai ? ai : true; // Player AI
+    this.ai = true; // Player AI
   }
 
   // **********  GAMING ACTIONS ********** //

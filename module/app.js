@@ -8,6 +8,5 @@ export function launchApp(){
   // rpgGame.getInput(document.getElementById("userInput").value);
   const rpgGame = new Game();
   rpgGame.startGame();
+  document.getElementById('launchApp').classList.toggle('collapse');
 }
-
-// app();

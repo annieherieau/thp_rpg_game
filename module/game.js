@@ -52,7 +52,7 @@ export class Game {
     ) {
       numberInput = parseInt(
         window.prompt(
-          `Sélectionnez le nombre de joueurs (min ${Game.minPlayers} - max  ${Game.maxPlayers})`
+          `Choisis le nombre de joueurs (min ${Game.minPlayers} - max  ${Game.maxPlayers})`
         )
       );
     }
@@ -66,7 +66,7 @@ export class Game {
     while (userInput < 1 || userInput > 2 || !userInput) {
       userInput = parseInt(
         window.prompt(
-          "Sélectionnez le mode de jeu: \n 1. Survival \n 2. x-Turns"
+          "Choisis le mode de jeu: \n 1. Survival \n 2. x-Turns"
         )
       );
     }
@@ -80,7 +80,7 @@ export class Game {
       let numberInput = 0;
       while (numberInput < 1 || !numberInput) {
         numberInput = parseInt(
-          window.prompt("Choisissez le nombre de tours (minumum 1)")
+          window.prompt("Choisis le nombre de tours (minumum 1)")
         );
       }
       console.log(`> Mode ${numberInput}-Turns`);
@@ -95,7 +95,7 @@ export class Game {
     while (!userInput || userInput < 1 || userInput > 3) {
       userInput = parseInt(
         window.prompt(
-          "Sélectionnez le mode de combat: \n 1. Players vs Players \n 2. One Player vs AI  \n 3. AI vs AI"
+          "Choisis le mode de combat: \n 1. Players vs Players \n 2. One Player vs AI  \n 3. AI vs AI"
         )
       );
     }
@@ -155,13 +155,9 @@ export class Game {
     let menu = Game.defaultPlayers.map((player, i) => {
       return `${i + 1}. ${player.class.name}`;
     });
-    while (
-      !userInput ||
-      userInput < 1 ||
-      userInput > Game.defaultPlayers.length
-    ) {
+    while (!userInput || userInput < 1 || userInput > menu.length) {
       userInput = parseInt(
-        window.prompt(`Sélectionnez la classe: \n ${menu.join(`\n`)}`)
+        window.prompt(`Choisis ta classe: \n ${menu.join(`\n`)}`)
       );
     }
     return Game.defaultPlayers[userInput - 1].class;
@@ -170,23 +166,18 @@ export class Game {
   // nouveau joueur humain
   newHumanPlayer() {
     let playerClass = this.setPlayerClass();
-
-    return new playerClass(this.setPlayerName(), false);
+    let player = new playerClass(this.setPlayerName());
+    player.ai = false;
+    return player;
   }
 
   // choix du nom Joueur humain
   setPlayerName() {
     let userInput = "";
     while (!userInput) {
-      userInput = window.prompt("Nom du joueur:");
+      userInput = window.prompt("Choisis le nom du joueur :");
     }
     return userInput;
-  }
-
-  // affichage console
-  alertText(text) {
-    // alert(text);
-    console.log(text);
   }
 
   // TODO faire via formulaire: numberInput = getInput();
@@ -194,7 +185,7 @@ export class Game {
   //   return element;
   // }
 
-  // ************ GMAE PLAY ************** //
+  // ************ GAME PLAY ************** //
   // début de la partie
   startGame() {
     do {
@@ -204,13 +195,15 @@ export class Game {
 
   // début du tour
   startTurn() {
-    console.log(`***************** Tour n° ${this.turnCount} ***************** `);
+    console.log(
+      `***************** Tour n° ${this.turnCount} ***************** `
+    );
     // Affichage des états des joueurs
     this.watchStats();
     // Appel des players (ordre aléatoire)
     this.#shuffle(this.playersLeft).forEach((player) => {
       // joueur en vie
-      if (!player.isDead()){
+      if (!player.isDead()) {
         console.log(`----------------------------------------`);
         console.log(`C'est à ${player.player_name} de jouer :`);
         // action
@@ -218,6 +211,7 @@ export class Game {
           this.aiPlay(player);
         } else {
           // action human
+          this.humanPlay(player);
         }
       }
     });
@@ -255,15 +249,22 @@ export class Game {
     return false;
   }
 
+  // fin de partie (vainqueurs)
+  endGame() {
+    // joueurs restants gagnent
+    this.playersLeft.forEach((player) => {
+      player.status = "winner";
+    });
+    console.log(`************ FIN DE LA PARTIE ************ `);
+    console.log(`************   Vainqueur(s)   ************ `);
+    this.watchStats();
+  }
+
   // Action de jeu de l'AI
   aiPlay(player) {
     // Choix du joueur cible (sauf lui-meme et les morts)
-    this.playersLeft = this.checkPlayersLeft();
-    let victims = this.playersLeft.filter((victim) => victim != player);
     // la plus affaiblie
-    let bestVictim = victims.sort((a, b) => {
-      a.hp - b.hp;
-    })[0];
+    let bestVictim = this.victims(player)[0];
     // choix de l'attaque
     let choice = Math.round(Math.random(1));
     if (choice) {
@@ -273,17 +274,65 @@ export class Game {
     }
   }
 
-  endGame() {
-    // joueurs restants gagnent
-    this.playersLeft.forEach((player) => {
-      player.status = "winner";
-    });
-    console.log(`************ FIN DE LA PARTIE ************ `);
-    console.log(`************   Vainqueur(s)   ************ `);
-    this.watchStats();
-
+  // // Action de jeu de l'humain
+  humanPlay(player) {
+    // choix de la victime
+    this.selectAttack(player, this.selectVictim(player));
   }
 
+  // choix de la victime
+  selectVictim(player) {
+    // Liste des victime + création du menu
+    let victims = this.victims(player);
+    // reste 1 victime: pas d'input demandé
+    if (victims.length == 1){ return victims[0]};
+
+    let menu = victims.map((victim, i) => {
+      return `${i + 1}. ${victim.player_name} (${victim.class_name}) | hp: ${
+        victim.hp
+      }/${player.hp_max}`;
+    });
+
+    let userInput = "";
+    while (!userInput || userInput < 1 || userInput > victims.length) {
+      userInput = parseInt(
+        window.prompt(`${player.player_name} choisis ta victime : \n ${menu.join(`\n`)}`)
+      );
+    }
+    return victims[userInput - 1];
+  }
+
+  // choix de l'attaque
+  selectAttack(player, victim) {
+    // création du menu
+    let menu = `1. Simple attaque => dégâts:${player.dmg}\n`;
+    menu += `2. ${player.special}  => `;
+    if (player.mana_cost) {
+      menu += `mana: ${player.mana_cost}. `;
+    }
+    if (player.dmg_spe) {
+      menu += `dégâts: ${player.dmg_spe}. `;
+    }
+    if (player.self_hp) {
+      menu += `hp: +${player.self_hp}. `;
+    }
+
+    // Choix du user
+    let userInput = "";
+    while (!userInput || userInput < 1 || userInput > 2) {
+      userInput = parseInt(
+        window.prompt(`${player.player_name} choisis ton attaque: \n ${menu}`)
+      );
+    }
+
+    if (userInput == 1) {
+      player.attacks(victim);
+    } else {
+      player.specialAttack(victim);
+    }
+  }
+  //  ************** HELPERS ************* //
+  // retrait des joueurs morts
   checkPlayersLeft(players = this.playersLeft) {
     return players.filter((player) => player.hp > 0);
   }
@@ -296,6 +345,19 @@ export class Game {
         `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`
       );
     });
+  }
+
+  // sélection des victimes disponibles
+  victims(player) {
+    // enlever les morts
+    this.playersLeft = this.checkPlayersLeft();
+    let victims = this.playersLeft.filter((victim) => victim != player);
+    // tri par hp
+    victims.sort((a, b) => {
+      a.hp - b.hp;
+    });
+
+    return victims;
   }
 
   // ordre aleatoire des joueurs
