@@ -1,5 +1,5 @@
 // Classe de joueur de base
-class Character {
+export class Character {
   // méthode de la classe
   static playerName() {
     return `${this.name}_${Math.round(Math.random() * 1000)
@@ -8,7 +8,7 @@ class Character {
   }
 
   // fields des instances
-  constructor(playerName) {
+  constructor(playerName, ai) {
     this.player_name = playerName ? playerName : Character.playerName(); // nom du joueur
     this.class_name = Character.name;
     this.death_hp = 20; // hp récupéré lors qu'on tue un adversaire
@@ -22,6 +22,7 @@ class Character {
     this.dmg_spe = 5; // damage for special attack
     this.mana_cost = 10; // mana cost for make special attack
     this.self_hp = 0; // hp plus : gain de vie du spécial
+    this.ai = ai ? ai : true; // Player AI
   }
 
   // **********  GAMING ACTIONS ********** //
@@ -174,135 +175,5 @@ class Character {
     return {
       name: this.name, // nom de la classe
     };
-  }
-}
-// console.log(Character.classData());
-// let MonCharacter = new Character();
-// console.log(MonCharacter.data());
-// let MonCharacter2 = new Character('MonCharacter2');
-// console.log(MonCharacter2.data());
-
-// Fighter : combattant équilibré
-class Fighter extends Character {
-  constructor(playerName) {
-    super();
-    this.player_name = playerName ? playerName : Fighter.playerName(); // nom du joueur
-    this.class_name = Fighter.name;
-    this.hp_max = 12; //  health points maxi
-    this.hp = this.hp_max; // health points
-    this.mana_max = 40; // mana points maxi
-    this.mana = this.mana_max; // mana points
-    this.dmg = 4; // damage for simple attack
-    this.special = "Dark Vision"; // special attack name
-    this.dmg_spe = 5; // damage for special attack
-    this.mana_cost = 20; // mana cost for make special attack
-    this.self_hp = 0; // hp plus : gain de vie du spécial
-  }
-}
-
-// Paladin : chevalier puissant et défensif
-class Paladin extends Character {
-  constructor(playerName) {
-    super();
-    this.player_name = playerName ? playerName : Paladin.playerName(); // nom du joueur
-    this.class_name = Paladin.name;
-    this.hp_max = 16; //  health points maxi
-    this.hp = this.hp_max; // health points
-    this.mana_max = 160; // mana points maxi
-    this.mana = this.mana_max; // mana points
-    this.dmg = 3; // damage for simple attack
-    this.special = "Dark Vision"; // special attack name
-    this.dmg_spe = 4; // damage for special attack
-    this.mana_cost = 40; // mana cost for make special attack
-    this.self_hp = 5; // hp plus : gain de vie du spécial
-  }
-}
-
-// Monk (prètre qui peut se guérir)
-class Monk extends Character {
-  constructor(playerName) {
-    super();
-    this.player_name = playerName ? playerName : Monk.playerName(); // nom du joueur
-    this.class_name = Monk.name;
-    this.hp_max = 8; //  health points maxi
-    this.hp = this.hp_max; // health points
-    this.mana_max = 200; // mana points maxi
-    this.mana = this.mana_max; // mana points
-    this.dmg = 2; // damage for simple attack
-    this.special = "Heal"; // special attack name
-    this.dmg_spe = 0; // damage for special attack
-    this.mana_cost = 25; // mana cost for make special attack
-    this.self_hp = 8; // hp plus : gain de vie du spécial
-  }
-}
-
-
-// Berzerker (bourrin  avec une attaque élevée)
-class Berzerker extends Character {
-  constructor(playerName) {
-    super();
-    this.player_name = playerName ? playerName : Berzerker.playerName(); // nom du joueur
-    this.class_name = Berzerker.name;
-    this.hp_max = 8; //  health points maxi
-    this.hp = this.hp_max; // health points
-    this.mana_max = 0; // mana points maxi
-    this.mana = this.mana_max; // mana points
-    this.dmg = 4; // damage for simple attack
-    this.special = "Rage"; // special attack name
-    this.dmg_spe = this.dmg; // damage for special attack
-    this.mana_cost = 0; // mana cost for make special attack
-    this.self_hp = 0; // hp plus : gain de vie du spécial
-  }
-
-  specialAttack(victim){
-    if (this.canAttack(victim)){
-      this.hp -= 1;
-      this.dmg += 1;
-      this.dmg_spe = this.dmg;
-      super.specialAttack(victim);
-      return true;
-    }else{
-      return false;
-    }
-  }
-}
-
-// console.log(Berzerker.classData());
-let player1 = new Berzerker();
-console.log(player1.data());
-let player2 = new Berzerker("player2");
-console.log(player2.data());
-player1.specialAttack(player2);
-player1.specialAttack(player2);
-player1.specialAttack(player2);
-
-
-// Assassin (rusé et fourbe)
-class Assassin extends Character {
-  constructor(playerName) {
-    super();
-    this.player_name = playerName ? playerName : Assassin.playerName(); // nom du joueur
-    this.class_name = Assassin.name;
-    this.hp_max = 6; //  health points maxi
-    this.hp = this.hp_max; // health points
-    this.mana_max = 20; // mana points maxi
-    this.mana = this.mana_max; // mana points
-    this.dmg = 6; // damage for simple attack
-    this.special = "Shadow Hit"; // special attack name
-    this.dmg_spe = 7; // damage for special attack
-    this.mana_cost = 20; // mana cost for make special attack
-    this.self_hp = 0; // hp plus : gain de vie du spécial
-    this.shadowShield = false; // déclenché par Special: ne prend pas de dégât au tours suivant
-  }
-
-  //  activation du ShadowShield
-  specialAttack(victim){
-    if (this.canAttack(victim)){
-      super.specialAttack(victim);
-      this.shadowShield = true;
-      return true;
-    }else{
-      return false;
-    }
   }
 }
