@@ -7,7 +7,6 @@ basic RPG game
 
 ## Installation
 - Clone repository
-- execution in browser console from index.html
-- execution in console using Node.js : `$ node module/app.js`
+- execution in browser console (index.html)
 
 
