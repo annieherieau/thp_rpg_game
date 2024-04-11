@@ -1,6 +1,6 @@
 import { Character } from "./character.js";
 
-// Assassin (rusé et fourbe)
+// Fireball (Boule de feu et de nerfs)
 export class Fireball extends Character {
   constructor(playerName) {
     super();
@@ -11,7 +11,7 @@ export class Fireball extends Character {
     this.mana_max = 200; // mana points maxi
     this.mana = this.mana_max; // mana points
     this.dmg = 2; // damage for simple attack
-    this.special = "Shadow Hit"; // special attack name
+    this.special = "Big Bang"; // special attack name
     this.dmg_spe = 7; // damage for special attack
     this.mana_cost = 25; // mana cost for make special attack
     this.self_hp = 0; // hp plus : gain de vie du spécial

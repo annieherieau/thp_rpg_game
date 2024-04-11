@@ -17,7 +17,6 @@ export class Fighter extends Character {
     this.self_hp = 0; // hp plus : gain de vie du spécial
     this.visionShield = false;
     this.shield = 2;
-    this.turnCount = 1;
   }
 
   // DARK VISION : au prochain tour 2 dégats de moins par coup reçu (?)

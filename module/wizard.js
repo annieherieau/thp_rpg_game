@@ -26,10 +26,11 @@ export class Wizard extends Character {
         let mana_wiz = Math.abs(Math.round(victim.mana_max / 3) - (this.mana_max - this.mana));
         this.hp_max += hp_wiz;
         this.mana += mana_wiz;
-        console.log(`${this.player_name} récupère ${mana_wiz} mana et augmente son hp max de ${hp_wiz}`)
+        console.log(`${this.player_name} récupère ${mana_wiz} mana et ${hp_wiz} hp max sur le cadavre de ${victim.player_name}`);
       }else{
         victim.hp_max -= 1;
         this.hp_max += 1;
+        console.log(`${this.player_name} vole 1 hp max à ${victim.player_name}`)
       }
       return true;
     }else{
