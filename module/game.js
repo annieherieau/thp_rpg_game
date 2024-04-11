@@ -5,6 +5,8 @@ import { Paladin } from "./paladin.js";
 import { Monk } from "./monk.js";
 import { Berzerker } from "./berzerker.js";
 import { Assassin } from "./assasin.js";
+import { Wizard } from "./wizard.js";
+import { Fireball } from "./fireball.js";
 
 // RPG GAME
 export class Game {
@@ -15,14 +17,16 @@ export class Game {
     { class: Monk, player: "Moana" },
     { class: Berzerker, player: "Draven" },
     { class: Assassin, player: "Carl" },
+    { class: Wizard, player: "Nostradum" },
+    { class: Fireball, player: "Dallas" },
   ];
   static minPlayers = 2;
-  static maxPlayers = Game.defaultPlayers.length;
+  static maxPlayers = 5;
 
   // création des joueurs par défauts
   static newAiPlayers() {
     let aiPlayers = Game.defaultPlayers.map((aiPlayer, i) => {
-      return new aiPlayer.class(aiPlayer.player)
+      return new aiPlayer.class(aiPlayer.player);
     });
     return aiPlayers;
   }
@@ -46,8 +50,11 @@ export class Game {
       numberInput > Game.maxPlayers ||
       !numberInput
     ) {
-      numberInput = parseInt(window.prompt(`Sélectionnez le nombre de joueurs (min ${Game.minPlayers} - max  ${Game.maxPlayers})`));
-     
+      numberInput = parseInt(
+        window.prompt(
+          `Sélectionnez le nombre de joueurs (min ${Game.minPlayers} - max  ${Game.maxPlayers})`
+        )
+      );
     }
     this.alertText(`rpgGame à ${numberInput} joueurs`);
     return numberInput;
@@ -120,12 +127,12 @@ export class Game {
       // P vs P : le user choisi chaque joueur
       case 1:
         for (let i = 0; i < this.numberOfPlayers; i++) {
-          players.push(this.newHumanPlayer());    
+          players.push(this.newHumanPlayer());
         }
         break;
       // P vs AI : le user choisi 1 joueur et AI le reste
       case 2:
-        players = this.#shuffle(Game.newAiPlayers()).slice(0, number-1);
+        players = this.#shuffle(Game.newAiPlayers()).slice(0, number - 1);
         players.push(this.newHumanPlayer());
         break;
       // AI vs AI: création auto des joueurs
@@ -140,36 +147,38 @@ export class Game {
   }
 
   // sélection de la classe joueur human
-  setPlayerClass(){
-    let userInput = '';
+  setPlayerClass() {
+    let userInput = "";
     // création du menu
     let menu = Game.defaultPlayers.map((player, i) => {
-      return `${i+1}. ${player.class.name}`;
+      return `${i + 1}. ${player.class.name}`;
     });
-    while(!userInput || userInput < 1 || userInput > Game.defaultPlayers.length){
+    while (
+      !userInput ||
+      userInput < 1 ||
+      userInput > Game.defaultPlayers.length
+    ) {
       userInput = parseInt(
-        window.prompt(
-          `Sélectionnez la classe: \n ${menu.join(`\n`)}`
-        )
+        window.prompt(`Sélectionnez la classe: \n ${menu.join(`\n`)}`)
       );
     }
-    return Game.defaultPlayers[userInput-1].class;
+    return Game.defaultPlayers[userInput - 1].class;
   }
 
   // nouveau joueur humain
-  newHumanPlayer(){
+  newHumanPlayer() {
     let playerClass = this.setPlayerClass();
 
     return new playerClass(this.setPlayerName(), false);
   }
-  
+
   // choix du nom Joueur humain
-  setPlayerName(){
-    let userInput = '';
-    while (!userInput){
+  setPlayerName() {
+    let userInput = "";
+    while (!userInput) {
       userInput = window.prompt("Nom du joueur:");
     }
-    return userInput
+    return userInput;
   }
 
   // affichage console
@@ -188,8 +197,7 @@ export class Game {
   startGame() {
     do {
       this.startTurn();
-    }
-    while (!this.isOver());
+    } while (!this.isOver());
   }
 
   // début du tour
@@ -201,9 +209,9 @@ export class Game {
     this.#shuffle(this.playersLeft).forEach((player) => {
       console.log(`C'est à ${player.player_name} de jouer :`);
       // action
-      if (player.ai){
+      if (player.ai) {
         this.aiPlay(player);
-      }else{
+      } else {
         // action human
       }
       // enlever les morts
@@ -216,9 +224,9 @@ export class Game {
 
   // Passage au tour suivant
   skipturn() {
-    this.turnCount ++;
+    this.turnCount++;
     if (this.turnLeft > 0) {
-      this.turnLeft--; 
+      this.turnLeft--;
     }
     // verifier conditions de fin de partie
     if (this.isOver()) {
@@ -249,9 +257,9 @@ export class Game {
     })[0];
     // choix de l'attaque
     let choice = Math.round(Math.random(1));
-    if (choice){
+    if (choice) {
       return player.specialAttack(bestVictim);
-    }else{
+    } else {
       return player.attacks(bestVictim);
     }
   }
@@ -263,14 +271,14 @@ export class Game {
     });
   }
 
-  checkPlayersLeft(players= this.playersLeft){
-    return players.filter(player => player.hp > 0);
+  checkPlayersLeft(players = this.playersLeft) {
+    return players.filter((player) => player.hp > 0);
   }
   // Affichage des stats
   watchStats(players = this.playersLeft) {
     players.forEach((player) => {
-      let ai = '';
-      player.ai ? ai = 'ai-' : ai = 'h-';
+      let ai = "";
+      player.ai ? (ai = "ai-") : (ai = "h-");
       console.log(
         `${player.player_name} : hp = ${player.hp} / mana : ${player.mana} (${ai}${player.class_name})`
       );
