@@ -16,8 +16,8 @@ export class Assassin extends Character {
     this.mana_cost = 20; // mana cost for make special attack
     this.self_hp = 0; // hp plus : gain de vie du spécial
     this.shadowShield = false; // déclenché par Special: ne prend pas de dégât au tours suivant
+    this.turnCount = 1;
   }
-
   //  activation du ShadowShield
   specialAttack(victim){
     if (this.canAttack(victim)){

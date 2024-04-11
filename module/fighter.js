@@ -15,7 +15,11 @@ export class Fighter extends Character {
     this.dmg_spe = 5; // damage for special attack
     this.mana_cost = 20; // mana cost for make special attack
     this.self_hp = 0; // hp plus : gain de vie du spécial
+    this.turnCount = 1;
   }
+
+  // DARK VISION : au prochain tour 2 dégats de moins par coup reçu (?)
+
 }
 
 // console.log(Fighter.classData());
