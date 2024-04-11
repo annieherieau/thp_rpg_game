@@ -1,4 +1,5 @@
 // import des personnages
+import { Character } from "./character.js";
 import { Fighter } from "./fighter.js";
 import { Paladin } from "./paladin.js";
 import { Monk } from "./monk.js";
@@ -33,18 +34,10 @@ export class Game {
     this.combat = this.setCombat(); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
     this.playersLeft = this.players; // players restants à jouer (not dead) = gagnants en fin de partie
+    this.turnCount = 1;
   }
 
-  // affichage console
-  alertText(text) {
-    // alert(text);
-    console.log(text);
-  }
-
-   // TODO faire via formulaire: numberInput = getInput();
-  getInput(element) {
-    return element;
-  }
+  //  ************** SETTING ************* //
   // sélection du nombre de joueurs
   setNumberOfPlayers() {
     let numberInput = 0;
@@ -65,7 +58,7 @@ export class Game {
     while (userInput < 1 || userInput > 2 || !userInput) {
       userInput = parseInt(
         window.prompt(
-          `${userInput} Sélectionnez le mode de jeu: \n 1. Survival \n 2. x-Turns`
+          "Sélectionnez le mode de jeu: \n 1. Survival \n 2. x-Turns"
         )
       );
     }
@@ -141,8 +134,8 @@ export class Game {
         break;
     }
     this.playersLeft = players;
-    console.log(players);
-    this.watchStats();
+    // console.log(players);
+    // this.watchStats(players);
     return players;
   }
 
@@ -170,7 +163,6 @@ export class Game {
     return new playerClass(this.setPlayerName(), false);
   }
   
-
   // choix du nom Joueur humain
   setPlayerName(){
     let userInput = '';
@@ -179,25 +171,43 @@ export class Game {
     }
     return userInput
   }
+
+  // affichage console
+  alertText(text) {
+    // alert(text);
+    console.log(text);
+  }
+
+  // TODO faire via formulaire: numberInput = getInput();
+  // getInput(element) {
+  //   return element;
+  // }
+
+  // ************ GMAE PLAY ************** //
   // début de la partie
   startGame() {
-    // paramètres de jeu
-    // this.settings();
-
-    while (this.isPlaying()) {
+    do {
       this.startTurn();
     }
+    while (!this.isOver());
   }
 
   // début du tour
   startTurn() {
-    console.log(`****** Tour n° ${this.turnLeft} ****** `);
+    console.log(`****** Tour n° ${this.turnCount} ****** `);
     // Affichage des états des joueurs
     this.watchStats();
     // Appel des players (ordre aléatoire)
-    this.#shuffle(this.players).forEach((player) => {
+    this.#shuffle(this.playersLeft).forEach((player) => {
       console.log(`C'est à ${player.player_name} de jouer :`);
       // action
+      if (player.ai){
+        this.aiPlay(player);
+      }else{
+        // action human
+      }
+      // enlever les morts
+      this.playersLeft = this.checkPlayersLeft();
     });
 
     // fin du tour
@@ -206,11 +216,12 @@ export class Game {
 
   // Passage au tour suivant
   skipturn() {
+    this.turnCount ++;
     if (this.turnLeft > 0) {
-      this.turnLeft--;
+      this.turnLeft--; 
     }
     // verifier conditions de fin de partie
-    if (isOver()) {
+    if (this.isOver()) {
       this.endGame();
     }
   }
@@ -228,19 +239,21 @@ export class Game {
     return false;
   }
 
-  // la partie continue
-  isPlaying() {
-    return this.isOver();
-  }
-
   // Action de jeu de l'AI
-  aiPlay() {
-    // Choix du joueur cible
-    return this.playersLeft.sort((player) => {
-      player.hp;
+  aiPlay(player) {
+    // Choix du joueur cible (sauf lui-meme)
+    let victims = this.playersLeft.filter((victim) => victim != player);
+    // la plus affaiblie
+    let bestVictim = victims.sort((a, b) => {
+      a.hp - b.hp;
     })[0];
-
     // choix de l'attaque
+    let choice = Math.round(Math.random(1));
+    if (choice){
+      return player.specialAttack(bestVictim);
+    }else{
+      return player.attacks(bestVictim);
+    }
   }
 
   endGame() {
@@ -250,9 +263,12 @@ export class Game {
     });
   }
 
+  checkPlayersLeft(players= this.playersLeft){
+    return players.filter(player => player.hp > 0);
+  }
   // Affichage des stats
-  watchStats() {
-    this.playersLeft.forEach((player) => {
+  watchStats(players = this.playersLeft) {
+    players.forEach((player) => {
       let ai = '';
       player.ai ? ai = 'ai-' : ai = 'h-';
       console.log(
