@@ -15,8 +15,8 @@ export class Game {
     { class: Berzerker, player: "Draven" },
     { class: Assassin, player: "Carl" },
   ];
-  static survival = -1;
-  static xTurns = 10;
+  static minPlayers = 2;
+  static maxPlayers = 8;
 
   // création des joueurs par défauts
   static newDefaultPlayers() {
@@ -27,18 +27,89 @@ export class Game {
   }
 
   // initie 5 persos
-  constructor(mode, players_array, numberOfTurns) {
-    this.mode = mode ? mode : 3;  // 1. Mode players vs players | 2. 1 player vs AI | 3. AI vs AI
-    this.players = players_array ? players_array : Game.newDefaultPlayers(); // players au départ de la partie (array)
-    this.numberOfPlayers = players_array ? players_array.length : 5; // initie le nombre de players
-    this.turnLeft = numberOfTurns ? numberOfTurns : 10; // nombre de tours restants
+  constructor() {
+    this.numberOfPlayers = this.setNumberOfPlayers(); // initie le nombre de players
+    this.turnLeft = this.setMode(); // nombre de tours restants
+    this.combat =this.setCombat(); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
+    this.players = this.setPlayers(); // players au départ de la partie (array)
     this.playersLeft = this.players; // players restants à jouer (not dead) = gagnants en fin de partie
+  }
+
+  alertText(text){
+    alert(text);
+    console.log(text);
+  }
+  // sélection du nombre de joueurs
+  setNumberOfPlayers(){
+    this.alertText('*********** RPG GAME *********** \n ----------- Settings -----------');
+    let numberInput = 0;
+    while (numberInput < Game.minPlayers || numberInput > Game.maxPlayers || !numberInput) {
+      numberInput = parseInt(window.prompt("Sélectionnez le nombre de joueurs (min 2 - max 8)"));
+    }
+    this.alertText(`rpgGame à ${numberInput} joueurs`);
+    return numberInput;
+  }
+  // selection du mode x-Turn / survival
+  setMode(){
+    let userInput = 0;
+    while(userInput < 1 ||  userInput > 2 || !userInput ){
+      userInput = parseInt(window.prompt(`${userInput} Sélectionnez le mode de jeu: \n 1. Survival \n 2. x-Turns`));
+    }
+    // Survival
+    if (userInput == 1){
+      this.alertText('Mode Survie');
+      return -1;
+    // x-Turns
+    }else{
+      // choix du nombre de tours
+      let numberInput = 0;
+      while(numberInput <1 || !numberInput){
+        numberInput  = parseInt(window.prompt("Choisissez le nombre de tours (minumum 1)"));
+      }
+      this.alertText(`Mode ${numberInput}-Turns`);
+      return numberInput;
+    }
+  }
+
+  // Sélection du mode de combat : P vs P | P vs AI | AI vs AI
+  setCombat(){
+    let userInput = 0;
+    let text ='';
+    while(!userInput || userInput < 1 || userInput > 3) {
+      userInput = parseInt(window.prompt("Sélectionnez le mode de combat: \n 1. Players vs Players \n 2. One Player vs AI  \n 3. AI vs AI"));
+    }
+
+    switch (userInput) {
+      case 1:
+        text = ' Players vs Players';
+        break;
+      case 2:
+        text = 'One Player vs AI';
+        break;
+
+      case 3:
+        text = 'AI vs AI';
+        break;
+    
+      default:
+        this.alertText('???');
+        break;
+    }
+    this.alertText(text);
+    return userInput;
+  }
+
+  // Sélection des joueurs
+  setPlayers(number) {
+    this.alertText('nombre de joueurs');
+    let players = Game.newDefaultPlayers();
+    return this.#shuffle(players).slice(0, number);
   }
 
   // début de la partie
   startGame() {
     // paramètres de jeu
-    this.settings();
+    // this.settings();
       
     while (this.isPlaying()){
       this.startTurn();
@@ -121,18 +192,5 @@ export class Game {
     return players.sort(() => Math.random() - 0.5);
   }
 
-  // Paramètres de jeu
-  settings() {
-    // mode de jeu
-    this.mode = this.setMode();
-
-    // selection des players
-    this.players = this.setPlayers();
-
-  }
-
-  // Sélection des joueurs
-  setPlayers() {
-    return this.#shuffle(this.players).slice(0, this.numberOfPlayers);
-  }
+  
 }
