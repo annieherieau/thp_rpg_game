@@ -24,7 +24,10 @@ export class Fighter extends Character {
   // activation du visionShield
   specialAttack(victim){
     if (this.canAttack(victim)){
-      if (this.checkMana()){ this.visionShield = true; }
+      if (this.checkMana()){ 
+        this.visionShield = true; 
+        console.log(`VisionShied activé`);
+      }
         super.specialAttack(victim);
         return true;
     }else{

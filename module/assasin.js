@@ -8,7 +8,7 @@ export class Assassin extends Character {
     this.class_name = Assassin.name;
     this.hp_max = 6; //  health points maxi
     this.hp = this.hp_max; // health points
-    this.mana_max = 20; // mana points maxi
+    this.mana_max = 100; // mana points maxi
     this.mana = this.mana_max; // mana points
     this.dmg = 6; // damage for simple attack
     this.special = "Shadow Hit"; // special attack name
@@ -20,7 +20,10 @@ export class Assassin extends Character {
   // activation du ShadowShield
   specialAttack(victim){
     if (this.canAttack(victim)){
-      if (this.checkMana()){ this.shadowShield = true; }
+      if (this.checkMana()){ 
+        this.shadowShield = true;
+        console.log(`ShadowShied activé`);
+      }
         super.specialAttack(victim);
         return true;
     }else{

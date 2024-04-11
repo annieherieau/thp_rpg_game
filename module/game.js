@@ -158,7 +158,7 @@ export class Game {
     });
     while (!userInput || userInput < 1 || userInput > menu.length) {
       userInput = parseInt(
-        window.prompt(`Choisis ta classe: \n ${menu.join(`\n`)}`)
+        window.prompt(`Choisis ton personnage: \n ${menu.join(`\n`)}`)
       );
     }
     return Game.defaultPlayers[userInput - 1].class;
@@ -291,7 +291,7 @@ export class Game {
     let menu = victims.map((victim, i) => {
       return `${i + 1}. ${victim.player_name} (${victim.class_name}) | hp: ${
         victim.hp
-      }/${player.hp_max}`;
+      }/${victim.hp_max}`;
     });
 
     let userInput = "";
@@ -306,7 +306,7 @@ export class Game {
   // choix de l'attaque
   selectAttack(player, victim) {
     // création du menu
-    let menu = `1. Simple attaque => dégâts:${player.dmg}\n`;
+    let menu = `1. Simple attaque => dégâts: ${player.dmg}\n`;
     menu += `2. ${player.special}  => `;
     if (player.mana_cost) {
       menu += `mana: ${player.mana_cost}. `;
