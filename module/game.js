@@ -56,7 +56,8 @@ export class Game {
         )
       );
     }
-    this.alertText(`rpgGame à ${numberInput} joueurs`);
+    console.log(`---------- Paramètres ----------`);
+    console.log(`> Partie à ${numberInput} joueurs`);
     return numberInput;
   }
   // selection du mode x-Turn / survival
@@ -71,7 +72,7 @@ export class Game {
     }
     // Survival
     if (userInput == 1) {
-      this.alertText("Mode Survie");
+      console.log("> Mode Survie");
       return -1;
       // x-Turns
     } else {
@@ -82,7 +83,7 @@ export class Game {
           window.prompt("Choisissez le nombre de tours (minumum 1)")
         );
       }
-      this.alertText(`Mode ${numberInput}-Turns`);
+      console.log(`> Mode ${numberInput}-Turns`);
       return numberInput;
     }
   }
@@ -101,21 +102,21 @@ export class Game {
 
     switch (userInput) {
       case 1:
-        text = " Players vs Players";
+        text = "> Players vs Players";
         break;
       case 2:
-        text = "One Player vs AI";
+        text = "> One Player vs AI";
         break;
 
       case 3:
-        text = "AI vs AI";
+        text = "> AI vs AI";
         break;
 
       default:
-        this.alertText("???");
+        this.alertText("Humpf !?");
         break;
     }
-    this.alertText(text);
+    console.log(text);
     return userInput;
   }
 
@@ -143,6 +144,7 @@ export class Game {
     this.playersLeft = players;
     // console.log(players);
     // this.watchStats(players);
+    console.log(`-------------------------------`);
     return players;
   }
 
@@ -202,28 +204,34 @@ export class Game {
 
   // début du tour
   startTurn() {
-    console.log(`****** Tour n° ${this.turnCount} ****** `);
+    console.log(`***************** Tour n° ${this.turnCount} ***************** `);
     // Affichage des états des joueurs
     this.watchStats();
     // Appel des players (ordre aléatoire)
     this.#shuffle(this.playersLeft).forEach((player) => {
-      console.log(`C'est à ${player.player_name} de jouer :`);
-      // action
-      if (player.ai) {
-        this.aiPlay(player);
-      } else {
-        // action human
+      // joueur en vie
+      if (!player.isDead()){
+        console.log(`----------------------------------------`);
+        console.log(`C'est à ${player.player_name} de jouer :`);
+        // action
+        if (player.ai) {
+          this.aiPlay(player);
+        } else {
+          // action human
+        }
       }
-      // enlever les morts
-      this.playersLeft = this.checkPlayersLeft();
     });
 
     // fin du tour
+    console.log(`********************************************* `);
     this.skipturn();
   }
 
   // Passage au tour suivant
   skipturn() {
+    // enlever les morts
+    this.playersLeft = this.checkPlayersLeft();
+
     this.turnCount++;
     if (this.turnLeft > 0) {
       this.turnLeft--;
@@ -249,7 +257,8 @@ export class Game {
 
   // Action de jeu de l'AI
   aiPlay(player) {
-    // Choix du joueur cible (sauf lui-meme)
+    // Choix du joueur cible (sauf lui-meme et les morts)
+    this.playersLeft = this.checkPlayersLeft();
     let victims = this.playersLeft.filter((victim) => victim != player);
     // la plus affaiblie
     let bestVictim = victims.sort((a, b) => {
@@ -269,6 +278,10 @@ export class Game {
     this.playersLeft.forEach((player) => {
       player.status = "winner";
     });
+    console.log(`************ FIN DE LA PARTIE ************ `);
+    console.log(`************   Vainqueur(s)   ************ `);
+    this.watchStats();
+
   }
 
   checkPlayersLeft(players = this.playersLeft) {
@@ -280,7 +293,7 @@ export class Game {
       let ai = "";
       player.ai ? (ai = "ai-") : (ai = "h-");
       console.log(
-        `${player.player_name} : hp = ${player.hp} / mana : ${player.mana} (${ai}${player.class_name})`
+        `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`
       );
     });
   }

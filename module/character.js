@@ -32,7 +32,7 @@ export class Character {
     if (this.canAttack(victim)) {
       // OUI
       console.log(
-        `${this.player_name} attaque ${victim.player_name} (dégâts:  ${damage} pv)`
+        `${this.player_name} attaque ${victim.player_name}`
       );
       this.#dealDamage(victim, damage);
       return true;
@@ -65,7 +65,7 @@ export class Character {
     }
 
     // Execution de l'attaque
-    console.log(`${this.special} !`);
+    console.log(`~~~ ! ${(this.special).toUpperCase()} ! ~~~`);
     // mana
     if(this.mana_cost){
       this.#useMana(this.mana_cost);
