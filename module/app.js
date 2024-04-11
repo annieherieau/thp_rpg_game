@@ -1,11 +1,13 @@
 import { Game } from "./game.js";
+//
 
-function app(){
+// lancement de l'application
+export function launchApp(){
+  document.getElementById('launchApp').classList.toggle('collapse');
+  // document.getElementById('settings').classList.toggle('collapse');
+  // rpgGame.getInput(document.getElementById("userInput").value);
   const rpgGame = new Game();
-
-  // console.log(this.playersLeft.sort(player => {
-  //   player.hp;
-  // })[0]);
+ 
 }
 
-app();
+// app();
