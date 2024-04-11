@@ -7,7 +7,6 @@ import { Berzerker } from "./berzerker.js";
 import { Assassin } from "./assasin.js";
 import { Wizard } from "./wizard.js";
 import { Fireball } from "./fireball.js";
-import { getInput } from "./helpers.js";
 
 // RPG GAME
 export class Game {
@@ -44,13 +43,22 @@ export class Game {
 
   //  ************** SETTING ************* //
   settings(){
-    alert('gameSetting ok')
-    // let userInput = getInput();
-    // this.numberOfPlayers = this.setNumberOfPlayers(); // initie le nombre de players
-    // this.turnLeft = this.setMode(); // nombre de tours restants
-    // this.combat = this.setCombat(); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
-    // this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
+    this.numberOfPlayers = parseInt(this.getIntput('nbreRadio')); // initie le nombre de players
+    // mode  Survival / x-Turn
+    // nombre de tours restants
+    this.turnLeft = parseInt(this.getIntput('turnNumberInput')); 
+    this.combat = parseInt(this.getIntput('combatRadio')); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
+    this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
   }
+
+  // récupérer les infos formulaire
+  getIntput(paraName){
+    let url_string = window.location.href; // www.test.com?filename=test
+      let url = new URL(url_string);
+      let paramValue = url.searchParams.get(paraName);
+      return paramValue;
+  }
+
   // sélection du nombre de joueurs
   setNumberOfPlayers() {
     let numberInput = 0;
@@ -189,11 +197,6 @@ export class Game {
     }
     return userInput;
   }
-
-  // TODO faire via formulaire: numberInput = getInput();
-  // getInput(element) {
-  //   return element;
-  // }
 
   // ************ GAME PLAY ************** //
   // début de la partie

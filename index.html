@@ -37,7 +37,7 @@
       <h1 class="text-primary mt-5 mb-3">RPG Game Js</h1>
       <!--  parametre -->
       <section>
-        <form action="game.html" onsubmit="getInput()" method="get">
+        <form action="start.html" method="get" name="settingForm">
             <fieldset class="card border-primary m-1 p-0" style="min-width: 30rem; max-width: 50rem;">
               <div class="card-header mt-1"><legend>Paramètres de jeu</legend></div>
               
@@ -86,7 +86,7 @@
                       </label>
                     </div>
                     <div class="form-check mx-2">
-                      <input onclick="showTurn()" id="numberTurn" class="form-check-input" type="radio" name="modeRadio" id="modeRadio2" value="2">
+                      <input onclick="showTurn()" class="form-check-input" type="radio" name="modeRadio" id="modeRadio2" value="2">
                       <label class="form-check-label" for="modeRadio2">
                         x-Turn
                       </label>
@@ -96,7 +96,7 @@
                 <!-- nombre de tours (nombre) -->
                 <div id="turnNumber" class="collapse" >
                   <label for="turnNumber" class="form-label mt-4">Nombre de tours (minimum 1)</label>
-                  <input id="turnNumberInput" type="number" class="form-control"  aria-describedby="turnNumberHelp" style="width: 220px;"">
+                  <input id="turnNumberInput" name="turnNumberInput" type="number" value ="-1" class="form-control"  aria-describedby="turnNumberHelp" style="width: 220px;">
                 </div>
 
                 <!-- Mode combat  1.P-P 2.P-ai 3.ai-ai (radio)-->
@@ -104,26 +104,129 @@
                   <h5 class="w-25">Mode Combat</h5>
                   <div class="d-flex align-items-center m-auto">
                     <div class="form-check mx-2">
-                      <input class="form-check-input" type="radio" name="combatRadio" id="combatRadio1" value="1">
+                      <input onclick='showPlayers(5)' class="form-check-input" type="radio" name="combatRadio" id="combatRadio1" value="1">
                       <label class="form-check-label" for="combatRadio1">
                         Players vs Players
                       </label>
                     </div>
                     <div class="form-check mx-2">
-                      <input class="form-check-input" type="radio" name="combatRadio" id="combatRadio2" value="2"  checked="">
+                      <input onclick='showPlayers(1)' class="form-check-input" type="radio" name="combatRadio" id="combatRadio2" value="2"  checked="">
                       <label class="form-check-label" for="combatRadio2">
                         One Player vs AI
                       </label>
                     </div>
                     <div class="form-check mx-2">
-                      <input class="form-check-input" type="radio" name="combatRadio" id="combatRadio3" value="3">
+                      <input onclick='showPlayers(0)' class="form-check-input" type="radio" name="combatRadio" id="combatRadio3" value="3">
                       <label class="form-check-label" for="combatRadio3">
                         AI vs AI
                       </label>
                     </div>
                   </div>
                 </div>
-                <button onclick='launchApp()' type="submit" class="btn btn-primary mt-3 w-100">Commencer la partie</button>
+
+                <!-- HUMAN PLAYERS  -->
+                <!-- P1 -->
+                <div  id="player1" class="row">
+                  <div class="col-6">
+                    <label for="name1" class="form-label mt-4">Nom du joueur 1</label>
+                    <input id="name1" name="name1" type="text" class="form-control"  style="width: 220px;">
+                  </div>
+                  <div class="col-6">
+                    <label for="class1" class="form-label  mx-3 mt-4">Classe du joueur 1</label>
+                    <select class="form-select mx-3" id="class1" name="class1" style="width: 220px;">
+                      <option>Fighter</option>
+                      <option>Paladin</option>
+                      <option>Monk</option>
+                      <option>Berzerker</option>
+                      <option>Assassin</option>
+                      <option>Wizard</option>
+                      <option>Fireball</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- P2 -->
+                <div  id="player2" class="collapse">
+                  <div class="col-6">
+                    <label for="name2" class="form-label mt-4">Nom du joueur 2</label>
+                    <input id="name2" name="name2" type="text" class="form-control"  style="width: 220px;">
+                  </div>
+                  <div class="col-6">
+                    <label for="class2" class="form-label  mx-3 mt-4">Classe du joueur 2</label>
+                    <select class="form-select mx-3" id="class2" name="class2" style="width: 220px;">
+                      <option>Fighter</option>
+                      <option>Paladin</option>
+                      <option>Monk</option>
+                      <option>Berzerker</option>
+                      <option>Assassin</option>
+                      <option>Wizard</option>
+                      <option>Fireball</option>
+                    </select>
+                  </div>
+                </div>
+
+                 <!-- P3 -->
+                 <div  id="player3" class="collapse">
+                  <div class="col-6">
+                    <label for="name3" class="form-label mt-4">Nom du joueur 3</label>
+                    <input id="name3" name="name3" type="text" class="form-control"  style="width: 220px;">
+                  </div>
+                  <div class="col-6">
+                    <label for="class3" class="form-label  mx-3 mt-4">Classe du joueur 3</label>
+                    <select class="form-select mx-3" name="class3" style="width: 220px;">
+                      <option>Fighter</option>
+                      <option>Paladin</option>
+                      <option>Monk</option>
+                      <option>Berzerker</option>
+                      <option>Assassin</option>
+                      <option>Wizard</option>
+                      <option>Fireball</option>
+                    </select>
+                  </div>
+                </div>
+
+                 <!-- P4 -->
+                 <div  id="player4" class="collapse">
+                  <div class="col-6">
+                    <label for="name4" class="form-label mt-4">Nom du joueur 4</label>
+                    <input name="name4" type="text" class="form-control"  style="width: 220px;">
+                  </div>
+                  <div class="col-6">
+                    <label for="class4" class="form-label  mx-3 mt-4">Classe du joueur 4</label>
+                    <select class="form-select mx-3"  name="class4" style="width: 220px;">
+                      <option>Fighter</option>
+                      <option>Paladin</option>
+                      <option>Monk</option>
+                      <option>Berzerker</option>
+                      <option>Assassin</option>
+                      <option>Wizard</option>
+                      <option>Fireball</option>
+                    </select>
+                  </div>
+                </div>
+
+                 <!-- P2 -->
+                 <div  id="player5" class="collapse">
+                  <div class="col-6">
+                    <label for="name5" class="form-label mt-4">Nom du joueur 5</label>
+                    <input id="name5" name="name5" type="text" class="form-control"  style="width: 220px;">
+                  </div>
+                  <div class="col-6">
+                    <label for="class5" class="form-label  mx-3 mt-4">Classe du joueur 5</label>
+                    <select class="form-select mx-3" id="class5" name="class5" style="width: 220px;">
+                      <option>Fighter</option>
+                      <option>Paladin</option>
+                      <option>Monk</option>
+                      <option>Berzerker</option>
+                      <option>Assassin</option>
+                      <option>Wizard</option>
+                      <option>Fireball</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary mt-3 w-100">Enregistrer</button>
               </div>
             </fieldset>
         </form>
