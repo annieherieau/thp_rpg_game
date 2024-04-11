@@ -7,7 +7,7 @@ import { Berzerker } from "./berzerker.js";
 import { Assassin } from "./assasin.js";
 import { Wizard } from "./wizard.js";
 import { Fireball } from "./fireball.js";
-import { getInput } from "./input.js";
+import { getInput } from "./helpers.js";
 
 // RPG GAME
 export class Game {
@@ -44,6 +44,7 @@ export class Game {
 
   //  ************** SETTING ************* //
   settings(){
+    alert('gameSetting ok')
     // let userInput = getInput();
     // this.numberOfPlayers = this.setNumberOfPlayers(); // initie le nombre de players
     // this.turnLeft = this.setMode(); // nombre de tours restants

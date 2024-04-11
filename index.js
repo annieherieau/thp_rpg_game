@@ -2,5 +2,7 @@
 import {launchApp} from './module/app.js';
 window.launchApp = launchApp;
 
-import {getInput} from './module/input.js';
+import {getInput} from './module/helpers.js';
 window.getInput = getInput;
+
+
