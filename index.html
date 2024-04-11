@@ -37,95 +37,14 @@
       <h1 class="text-primary mt-5 mb-3">RPG Game JS</h1>
       <!-- PLAYERS -->
       <section id='launchApp' class="w-100">
-        <div class="row">
-          <div class="card border-primary m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Javascript</div>
+          <div class="card border-primary m-1 p-0">
+            <div class="card-header">javascript basics</div>
             <div class="card-body">
               <h4 class="card-title">Nouvelle la partie</h4>
               <p>L'interface graphique n'est pas développée, alors ouvre la console avat de commencer.</p>
-              <button onclick="launchApp()" type="submit" class="btn btn-primary mt-2 w-100">COMMENCER</button>
+              <a onclick="launchApp()" href="settings.html" class="btn btn-primary mt-2 w-100">COMMENCER</a>
             </div>
-
-           </div>
-          <div class="card text-white bg-primary m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Fighter</div>
-            <div class="card-body">
-              <h4 class="card-title">Combattant équilibré</h4>
-              <p class="card-text">hp: 12 - mana: 40 - dmg: 4</p>
-              <p class="card-text"><strong>Dark Vision:</strong><br> mana: 20 - dmg: 4 - bouclier 2 hp</p>
-            </div>
-          </div>
-
-          <div class="card text-white bg-secondary m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Paladin</div>
-            <div class="card-body">
-              <h4 class="card-title">Chevalier puissant défensif</h4>
-              <p class="card-text">hp: 16 - mana: 160 - dmg: 3</p>
-              <p class="card-text"><strong>Healing Light:</strong><br> mana: 40 - dmg: 4 - hp: +5</p>
-            </div>
-          </div>
-          <div class="card text-white bg-success m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Monk</div>
-            <div class="card-body">
-              <h4 class="card-title">Prêtre auto-Guérisseur</h4>
-              <p class="card-text">hp: 8 - mana: 200 - dmg: 2</p>
-              <p class="card-text"><strong>Heal:</strong><br> mana: 25 - hp: +5</p>
-            </div>
-          </div>
-          <div class="card text-white bg-info m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Berzerker</div>
-            <div class="card-body">
-              <h4 class="card-title">Bourrin et grosse attaque</h4>
-              <p class="card-text">hp: 8 - mana: 0 - dmg: 4</p>
-              <p class="card-text"><strong>Rage:</strong><br> dmg: dmg+1 - hp: hp-1</p>
-            </div>
-          </div>
-          <div class="card text-white bg-warning m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Assassin</div>
-            <div class="card-body">
-              <h4 class="card-title">Renard rusé et fourbe</h4>
-              <p class="card-text">hp: 6 - mana: 100 - dmg: 6</p>
-              <p class="card-text"><strong>Shadow Hit:</strong><br> mana: 20 - dmg: 7 - bouclier 100%</p>
-            </div>
-          </div>
-          <div class="card text-white bg-dark m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Wizard</div>
-            <div class="card-body">
-              <h4 class="card-title">Nécromancien, voleur de vie</h4>
-              <p class="card-text">hp: 10 - mana: 200 - dmg: 2</p>
-              <p class="card-text"><strong>Thief of Life:</strong><br> mana: 50 - dmg: 8 - hp: +3 - hp_max: +1<br>
-               Nécromancie: +mana et +hp_max
-              </p>
-            </div>
-          </div>
-          <div class="card text-white bg-danger m-1 p-0 col-4" style="max-width: 20rem;">
-            <div class="card-header">Fireball</div>
-            <div class="card-body">
-              <h4 class="card-title">Boule de feu et de nerfs</h4>
-              <p class="card-text">hp: 12 - mana: 200 - dmg: 2</p>
-              <p class="card-text"><strong>Big Bang:</strong><br> mana: 25 - dmg: 25</p>
-            </div>
-          </div>
-        </div>
       </section>
-
-      <!-- SETTINGS -->
-      <section id='settings' class="w-75 collapse">
-        <fieldset class="mt-5 bg-light p-4 border">
-          <h3>Paramètres du Jeu</h3>
-          <legend id="setMode">setMode</legend>
-          <label for="userInput" class="form-label mt-4">userInput</label>
-          <ol id="settingList" class="collapse">
-            <li class="collapse"></li>
-            <li class="collapse"></li>
-            <li class="collapse"></li>
-          </ol>
-          <input type="text" class="form-control" id="userInput" aria-describedby="userInputHelp" placeholder="votre choix">
-          <button id="settingsButton" onclick="getInput()" type="submit" class="btn btn-primary mt-5 float-end w-25">Envoyer</button>
-        </fieldset>
-      </section>
-
-
     </main>
     
     
