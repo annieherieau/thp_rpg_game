@@ -43,6 +43,13 @@ export class Character {
 
   // se soigner
   takeCare(heal) {
+    if (this.hp == this.hp_max){
+      return false;
+    }
+    // géré la différence de hp pour affichage
+    let hp_dif = this.hp_max - this.hp;
+    heal = heal <= hp_dif ? heal : heal - hp_dif;
+
     (this.hp += heal) > this.hp_max ? (this.hp = this.hp_max) : this.hp;
     console.log(
       `${this.player_name} se soigne avec ${heal} pv => hp : ${this.hp}`

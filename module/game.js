@@ -56,6 +56,7 @@ export class Game {
         )
       );
     }
+    console.log(`************ NOUVELLE PARTIE ************ `);
     console.log(`---------- Paramètres ----------`);
     console.log(`> Partie à ${numberInput} joueurs`);
     return numberInput;
@@ -265,9 +266,9 @@ export class Game {
     // Choix du joueur cible (sauf lui-meme et les morts)
     // la plus affaiblie
     let bestVictim = this.victims(player)[0];
-    // choix de l'attaque
-    let choice = Math.round(Math.random(1));
-    if (choice) {
+    // choix de l'attaque random
+    let boolean = Math.random() >= 0.25;  // 25% attaque simple et 75 % attaque spéciale ?
+    if (boolean) {
       return player.specialAttack(bestVictim);
     } else {
       return player.attacks(bestVictim);
