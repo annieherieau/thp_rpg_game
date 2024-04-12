@@ -49,6 +49,7 @@ export class Game {
     this.turnLeft = parseInt(this.getIntput('turnNumberInput')); 
     this.combat = parseInt(this.getIntput('combatRadio')); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
+
   }
 
   // récupérer les infos formulaire
@@ -59,84 +60,84 @@ export class Game {
       return paramValue;
   }
 
-  // sélection du nombre de joueurs
-  setNumberOfPlayers() {
-    let numberInput = 0;
-    while (
-      numberInput < Game.minPlayers ||
-      numberInput > Game.maxPlayers ||
-      !numberInput
-    ) {
-      numberInput = parseInt(
-        window.prompt(
-          `Choisis le nombre de joueurs (min ${Game.minPlayers} - max  ${Game.maxPlayers})`
-        )
-      );
-    }
-    console.log(`************ NOUVELLE PARTIE ************ `);
-    console.log(`---------- Paramètres ----------`);
-    console.log(`> Partie à ${numberInput} joueurs`);
-    return numberInput;
-  }
-  // selection du mode x-Turn / survival
-  setMode() {
-    let userInput = 0;
-    while (userInput < 1 || userInput > 2 || !userInput) {
-      userInput = parseInt(
-        window.prompt(
-          "Choisis le mode de jeu: \n 1. Survival \n 2. x-Turns"
-        )
-      );
-    }
-    // Survival
-    if (userInput == 1) {
-      console.log("> Mode Survie");
-      return -1;
-      // x-Turns
-    } else {
-      // choix du nombre de tours
-      let numberInput = 0;
-      while (numberInput < 1 || !numberInput) {
-        numberInput = parseInt(
-          window.prompt("Choisis le nombre de tours (minumum 1)")
-        );
-      }
-      console.log(`> Mode ${numberInput}-Turns`);
-      return numberInput;
-    }
-  }
+  // // sélection du nombre de joueurs
+  // setNumberOfPlayers() {
+  //   let numberInput = 0;
+  //   while (
+  //     numberInput < Game.minPlayers ||
+  //     numberInput > Game.maxPlayers ||
+  //     !numberInput
+  //   ) {
+  //     numberInput = parseInt(
+  //       window.prompt(
+  //         `Choisis le nombre de joueurs (min ${Game.minPlayers} - max  ${Game.maxPlayers})`
+  //       )
+  //     );
+  //   }
+  //   console.log(`************ NOUVELLE PARTIE ************ `);
+  //   console.log(`---------- Paramètres ----------`);
+  //   console.log(`> Partie à ${numberInput} joueurs`);
+  //   return numberInput;
+  // }
+  // // selection du mode x-Turn / survival
+  // setMode() {
+  //   let userInput = 0;
+  //   while (userInput < 1 || userInput > 2 || !userInput) {
+  //     userInput = parseInt(
+  //       window.prompt(
+  //         "Choisis le mode de jeu: \n 1. Survival \n 2. x-Turns"
+  //       )
+  //     );
+  //   }
+  //   // Survival
+  //   if (userInput == 1) {
+  //     console.log("> Mode Survie");
+  //     return -1;
+  //     // x-Turns
+  //   } else {
+  //     // choix du nombre de tours
+  //     let numberInput = 0;
+  //     while (numberInput < 1 || !numberInput) {
+  //       numberInput = parseInt(
+  //         window.prompt("Choisis le nombre de tours (minumum 1)")
+  //       );
+  //     }
+  //     console.log(`> Mode ${numberInput}-Turns`);
+  //     return numberInput;
+  //   }
+  // }
 
-  // Sélection du mode de combat : P vs P | P vs AI | AI vs AI
-  setCombat() {
-    let userInput = 0;
-    let text = "";
-    while (!userInput || userInput < 1 || userInput > 3) {
-      userInput = parseInt(
-        window.prompt(
-          "Choisis le mode de combat: \n 1. Players vs Players \n 2. One Player vs AI  \n 3. AI vs AI"
-        )
-      );
-    }
+  // // Sélection du mode de combat : P vs P | P vs AI | AI vs AI
+  // setCombat() {
+  //   let userInput = 0;
+  //   let text = "";
+  //   while (!userInput || userInput < 1 || userInput > 3) {
+  //     userInput = parseInt(
+  //       window.prompt(
+  //         "Choisis le mode de combat: \n 1. Players vs Players \n 2. One Player vs AI  \n 3. AI vs AI"
+  //       )
+  //     );
+  //   }
 
-    switch (userInput) {
-      case 1:
-        text = "> Players vs Players";
-        break;
-      case 2:
-        text = "> One Player vs AI";
-        break;
+  //   switch (userInput) {
+  //     case 1:
+  //       text = "> Players vs Players";
+  //       break;
+  //     case 2:
+  //       text = "> One Player vs AI";
+  //       break;
 
-      case 3:
-        text = "> AI vs AI";
-        break;
+  //     case 3:
+  //       text = "> AI vs AI";
+  //       break;
 
-      default:
-        this.alertText("Humpf !?");
-        break;
-    }
-    console.log(text);
-    return userInput;
-  }
+  //     default:
+  //       this.alertText("Humpf !?");
+  //       break;
+  //   }
+  //   console.log(text);
+  //   return userInput;
+  // }
 
   // Sélection des joueurs
   setPlayers(number) {
@@ -146,7 +147,7 @@ export class Game {
       // P vs P : le user choisi chaque joueur
       case 1:
         for (let i = 0; i < this.numberOfPlayers; i++) {
-          players.push(this.newHumanPlayer());
+          players.push(this.newHumanPlayer(i+1));
         }
         break;
       // P vs AI : le user choisi 1 joueur et AI le reste
@@ -167,36 +168,39 @@ export class Game {
   }
 
   // sélection de la classe joueur human
-  setPlayerClass() {
-    let userInput = "";
-    // création du menu
-    let menu = Game.defaultPlayers.map((player, i) => {
-      return `${i + 1}. ${player.class.name}`;
-    });
-    while (!userInput || userInput < 1 || userInput > menu.length) {
-      userInput = parseInt(
-        window.prompt(`Choisis ton personnage: \n ${menu.join(`\n`)}`)
-      );
-    }
-    return Game.defaultPlayers[userInput - 1].class;
-  }
+  // setPlayerClass() {
+  //   let userInput = "";
+  //   // création du menu
+  //   let menu = Game.defaultPlayers.map((player, i) => {
+  //     return `${i + 1}. ${player.class.name}`;
+  //   });
+  //   while (!userInput || userInput < 1 || userInput > menu.length) {
+  //     userInput = parseInt(
+  //       window.prompt(`Choisis ton personnage: \n ${menu.join(`\n`)}`)
+  //     );
+  //   }
+  //   return Game.defaultPlayers[userInput - 1].class;
+  // }
 
   // nouveau joueur humain
-  newHumanPlayer() {
-    let playerClass = this.setPlayerClass();
-    let player = new playerClass(this.setPlayerName());
+  newHumanPlayer(number = 1) {
+    let playerClass = Game.defaultPlayers.find( p => p.class.name == this.getIntput(`class${number}`)).class;
+    let player = new playerClass(this.getIntput(`name${number}`));
+    // nom par défaut si vide
+    if (!player.player_name){ player.player_name = playerClass.playerName()};
+    // Humain
     player.ai = false;
     return player;
   }
 
   // choix du nom Joueur humain
-  setPlayerName() {
-    let userInput = "";
-    while (!userInput) {
-      userInput = window.prompt("Choisis le nom du joueur :");
-    }
-    return userInput;
-  }
+  // setPlayerName() {
+  //   let userInput = "";
+  //   while (!userInput) {
+  //     userInput = window.prompt("Choisis le nom du joueur :");
+  //   }
+  //   return userInput;
+  // }
 
   // ************ GAME PLAY ************** //
   // début de la partie
