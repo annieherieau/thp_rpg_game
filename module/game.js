@@ -118,7 +118,7 @@ export class Game {
   // début du tour
   startTurn() {
     this.watchStats();
-    removeText('addText');
+    // removeText('addText');
     addText(` Tour n° ${this.turnCount}  `, "h3");
     // Affichage des états des joueurs
     // Appel des players (ordre aléatoire)
