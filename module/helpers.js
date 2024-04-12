@@ -1,3 +1,4 @@
+// Récupère les données du formulaire
 export function getInput(paraName){
   let url_string = window.location.href; // www.test.com?filename=test
     let url = new URL(url_string);
@@ -5,19 +6,13 @@ export function getInput(paraName){
     return paramValue;
 }
 
-export function addText(text, balise="p"){
+// ajoute le text dans le Dom
+export function addText(text, balise="p", bClass='addText', parentId='gameplay', id=""){
   // créer élément
 let div = document.createElement(balise);
-div.setAttribute("class", "addText");
+div.setAttribute("class", bClass);
+if (id) { div.setAttribute("id", id);}
 div.innerText = text;
-let parent = document.getElementById("gameplay");
+let parent = document.getElementById(parentId);
 parent.append(div);
-}
-
-export function removeText(className){
-  let divs = document.getElementsByClassName(className);
-  console.log(divs);
-  for (let i = 0; i < divs.length; i++) {
-    divs[i].remove();
-  }
 }

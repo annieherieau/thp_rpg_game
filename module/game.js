@@ -8,7 +8,6 @@ import { Assassin } from "./assasin.js";
 import { Wizard } from "./wizard.js";
 import { Fireball } from "./fireball.js";
 import { addText } from "./helpers.js";
-import { removeText } from "./helpers.js";
 
 // RPG GAME
 export class Game {
@@ -107,7 +106,6 @@ export class Game {
     this.settings();
     this.watchStats();
     document.getElementById("nextTurn").classList.toggle("collapse");
-    document.getElementById("nextTurn").classList.toggle("collapse");
 
     // do {
 
@@ -154,6 +152,7 @@ export class Game {
     // verifier conditions de fin de partie
     if (this.isOver()) {
       this.endGame();
+      document.getElementById("nextTurn").classList.toggle("collapse");
     }
   }
 
@@ -172,14 +171,23 @@ export class Game {
 
   // fin de partie (vainqueurs)
   endGame() {
+    addText(` FIN DE LA PARTIE  `, "h3");
+    addText(` Classement: `);
     // joueurs restants gagnent
     this.playersLeft.forEach((player) => {
-      player.status = "winner";
+      player.status = "winner"; 
     });
-    addText(` FIN DE LA PARTIE  `, "h3");
-    addText(`Vainqueur(s)`, "h5");
+
+    // affichage de tous les joueurs
+    addText(``, 'ol', 'list-group', 'gameplay', 'olWinnners');
+    let players = this.players.sort((a, b) => b.hp - a.hp );
+    players.forEach((player) => {
+      let text= `${player.player_name} (${player.ai ? 'ai-' : 'h-'}${player.class_name}) : hp: ${player.hp} (${player.status})`;
+      addText(text, 'li', 'list-group-item', 'olWinnners');
+    })
+    document.getElementById("winners").classList.toggle('collapse');
     this.watchStats();
-    document.getElementById("nextTurn").classList.toggle("collapse");
+    
   }
 
   // Action de jeu de l'AI
@@ -265,20 +273,35 @@ export class Game {
 
   // Affichage des stats
   watchStats(players = this.playersLeft) {
-    for (let i = 0; i < 5; i++) {
-      let li = document.getElementById(`p${i + 1}`);
-
-      if (i < players.length) {
-        let player = players[i];
-        let ai = "";
-        player.ai ? (ai = "ai-") : (ai = "h-");
-
-        li.innerText = `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
-      } else {
-        li.innerText = "";
-      }
+    // enlever le ul
+    document.getElementById('ulStats').remove();
+    
+    // créer le ul
+    addText('', 'ul', 'list-group', 'divStats', 'ulStats');
+    // créer les li
+    let ai = "";
+    for (const player of players) {
+      player.ai ? (ai = "ai-") : (ai = "h-");
+      let text = `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
+      addText(text, 'li', 'list-group-item', 'ulStats',);
     }
   }
+
+  // watchStats(players = this.playersLeft) {
+  //   for (let i = 0; i < 5; i++) {
+  //     let li = document.getElementById(`p${i + 1}`);
+
+  //     if (i < players.length) {
+  //       let player = players[i];
+  //       let ai = "";
+  //       player.ai ? (ai = "ai-") : (ai = "h-");
+
+  //       li.innerText = `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
+  //     } else {
+  //       li.innerText = "";
+  //     }
+  //   }
+  // }
 
   // sélection des victimes disponibles
   victims(player) {

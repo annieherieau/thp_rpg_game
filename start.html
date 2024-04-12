@@ -57,21 +57,12 @@
 
       <!-- STATS -->
       <section id="stats">
-        <div class="" id="ulStats">
-          <ul class="list-group" id="watchStats">
-            <li id ="p1" class="list-group-item d-flex justify-content-between align-items-center">
-            </li>
-            <li id ="p2" class="list-group-item d-flex justify-content-between align-items-center">
-            </li>
-            <li id ="p3" class="list-group-item d-flex justify-content-between align-items-center">
-            </li>
-            <li id ="p4" class="list-group-item d-flex justify-content-between align-items-center">
-            </li>
-            <li id ="p5" class="list-group-item d-flex justify-content-between align-items-center">
-            </li>
+        <h4 id="winners" class="collapse">Vainqueur(s)</h4>
+        <div class="" id="divStats">
+          <ul class="list-group" id="ulStats">
           </ul>
         </div>
-        <button onclick="window.rpgGame.watchStats();window.rpgGame.startTurn()" class="btn btn-primary my-2 float-end w-25" id="nextTurn">Tour suivant</button>
+        <button onclick="window.rpgGame.watchStats();window.rpgGame.startTurn()" class="btn btn-primary my-2 float-end w-25 collapse" id="nextTurn">Tour suivant</button>
       </section>
 
       <!-- GAMEPLAY -->
