@@ -58,11 +58,9 @@ export class Game {
 
   //  ** SETTING * //
   settings() {
-    this.numberOfPlayers = parseInt(getInput("nbreRadio")); // initie le nombre de players
-    // mode  Survival / x-Turn
-    // nombre de tours restants
-    this.turnLeft = parseInt(getInput("turnNumberInput"));
-    this.combat = parseInt(getInput("combatRadio")); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
+    this.numberOfPlayers = parseInt(getInput("nbreRadio")) ? parseInt(getInput("nbreRadio")) : this.numberOfPlayers; // initie le nombre de players
+    this.turnLeft = parseInt(getInput("turnNumberInput")) ? parseInt(getInput("turnNumberInput")) : this.turnLeft; // nombre de tours restants
+    this.combat = parseInt(getInput("combatRadio")) ? parseInt(getInput("combatRadio")) : this.combat; // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
   }
 
