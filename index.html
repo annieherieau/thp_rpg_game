@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootwatch Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/sandstone/bootstrap.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
     <title>RPG Game Js</title>
   </head>
   <body>
@@ -39,11 +39,11 @@
     </header>
 
     <main class="container">
-      <h1 class="text-primary mt-5 mb-3">Partie Rapide</h1>
+      <h1 class="text-primary my-5">Partie Rapide</h1>
       <!--  parametre -->
-      <section>
+      <section class="my-3">
         <form action="game.html" method="get" name="settingForm">
-            <fieldset class="card border-primary m-1 p-0" style="min-width: 30rem; max-width: 50rem;">
+            <fieldset class="card border-primary p-0" style="min-width: 35rem; max-width: 35rem;">
               <div class="card-header mt-1"><legend>Joueur vs AI</legend></div>
               
               <div class="card-body px-4">
@@ -51,8 +51,8 @@
                 <!-- P1 -->
                 <div  id="player1" class="row">
                   <div class="col-6">
-                    <label for="name1" class="form-label mt-4">Nom du joueur</label>
-                    <input id="name1" name="name1" type="text" class="form-control"  style="width: 220px;">
+                    <label for="name1" class="form-label mt-4 required">Nom du joueur</label>
+                    <input id="name1" required name="name1" type="text" class="form-control"  style="width: 220px;">
                   </div>
                   <div class="col-6">
                     <label for="class1" class="form-label  mx-3 mt-4">Classe du joueur</label>
@@ -76,7 +76,7 @@
       <!-- PLAYERS -->
       <section>
         <div class="d-flex flex-wrap">
-          <div class="card text-white bg-primary m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
+          <div class="card perso text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
             <div class="card-header">Fighter</div>
             <div class="card-body">
               <h4 class="card-title">Combattant équilibré</h4>
@@ -84,7 +84,7 @@
               <p class="card-text"><strong>Dark Vision:</strong><br> mana: 20 - dmg: 4 - bouclier 2 hp</p>
             </div>
           </div>
-          <div class="card text-white bg-secondary m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
+          <div class="card perso text-white bg-dark m-1 p-0 border-primary"  style="max-width: 20rem; min-width: 20rem;">
             <div class="card-header">Paladin</div>
             <div class="card-body">
               <h4 class="card-title">Chevalier puissant défensif</h4>
@@ -92,7 +92,7 @@
               <p class="card-text"><strong>Healing Light:</strong><br> mana: 40 - dmg: 4 - hp: +5</p>
             </div>
           </div>
-          <div class="card text-white bg-success m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
+          <div class="card perso text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
             <div class="card-header">Monk</div>
             <div class="card-body">
               <h4 class="card-title">Prêtre auto-Guérisseur</h4>
@@ -100,7 +100,7 @@
               <p class="card-text"><strong>Heal:</strong><br> mana: 25 - hp: +5</p>
             </div>
           </div>
-          <div class="card text-white bg-info m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
+          <div class="card perso text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
             <div class="card-header">Berzerker</div>
             <div class="card-body">
               <h4 class="card-title">Bourrin et grosse attaque</h4>
@@ -108,7 +108,7 @@
               <p class="card-text"><strong>Rage:</strong><br> dmg: dmg+1 - hp: hp-1</p>
             </div>
           </div>
-          <div class="card text-white bg-warning m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
+          <div class="card perso text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
             <div class="card-header">Assassin</div>
             <div class="card-body">
               <h4 class="card-title">Renard rusé et fourbe</h4>
@@ -116,7 +116,7 @@
               <p class="card-text"><strong>Shadow Hit:</strong><br> mana: 20 - dmg: 7 - bouclier 100%</p>
             </div>
           </div>
-          <div class="card text-white bg-dark m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
+          <div class="card perso text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
             <div class="card-header">Wizard</div>
             <div class="card-body">
               <h4 class="card-title">Nécromancien, voleur de vie</h4>
@@ -126,7 +126,7 @@
               </p>
             </div>
           </div>
-          <div class="card text-white bg-danger m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
+          <div class="card perso text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
             <div class="card-header">Fireball</div>
             <div class="card-body">
               <h4 class="card-title">Boule de feu et de nerfs</h4>
