@@ -1,5 +1,5 @@
 import { Character } from "./character.js";
-import { addText } from "./helpers.js";
+import { addElement } from "../index.js";
 
 // Berzerker (bourrin  avec une attaque élevée)
 export class Berzerker extends Character {
@@ -19,10 +19,9 @@ export class Berzerker extends Character {
   }
 
   specialAttack(victim) {
-    if (this.canAttack(victim)) {
       // ne peut pas se tuer...
       if (this.hp == 1) {
-        addText(
+        addElement(
           `${this.special} impossible: ${this.player_name} va se se tuer !! attaque simple...`
         );
         super.attacks(victim);
@@ -31,10 +30,6 @@ export class Berzerker extends Character {
       this.hp -= 1;
       this.dmg += 1;
       this.dmg_spe = this.dmg;
-      super.specialAttack(victim);
-      return true;
-    } else {
-      return false;
-    }
+      return super.specialAttack(victim);
   }
 }

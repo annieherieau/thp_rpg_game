@@ -1,5 +1,5 @@
 import { Character } from "./character.js";
-import { addText } from "./helpers.js";
+import { addElement } from "../index.js";
 
 // Fireball (Boule de feu et de nerfs)
 export class Fireball extends Character {

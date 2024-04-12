@@ -1,5 +1,5 @@
 import { Character } from "./character.js";
-import { addText } from "./helpers.js";
+import { addElement } from "../index.js";
 
 // Fighter : combattant équilibré
 export class Fighter extends Character {
@@ -23,22 +23,17 @@ export class Fighter extends Character {
   // DARK VISION : au prochain tour 2 dégats de moins par coup reçu (?)
   // activation du visionShield
   specialAttack(victim) {
-    if (this.canAttack(victim)) {
       if (this.checkMana()) {
         this.visionShield = true;
-        addText(`VisionShied activé`);
+        addElement(`VisionShied activé`);
       }
-      super.specialAttack(victim);
-      return true;
-    } else {
-      return false;
-    }
+     return super.specialAttack(victim);
   }
 
   // Prise en compte du visionShield
   takeDamage(damage) {
     if (this.visionShield) {
-      addText(
+      addElement(
         `${this.player_name} prend ${this.shield} dégâts de moins grâce à VisionShield !`
       );
       this.visionShield = false;
