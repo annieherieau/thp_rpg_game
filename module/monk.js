@@ -1,8 +1,8 @@
 import { Character } from "./character.js";
-import { addText } from "./helpers.js";
+import { addElement } from "../index.js";
 
- // Monk (prètre qui peut se guérir)
- export class Monk extends Character {
+// Monk (prètre qui peut se guérir)
+export class Monk extends Character {
   constructor(playerName) {
     super();
     this.player_name = playerName ? playerName : Monk.playerName(); // nom du joueur

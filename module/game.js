@@ -7,7 +7,11 @@ import { Berzerker } from "./berzerker.js";
 import { Assassin } from "./assasin.js";
 import { Wizard } from "./wizard.js";
 import { Fireball } from "./fireball.js";
-import { addText } from "./helpers.js";
+import { getInput } from "../index.js";
+import { addElement } from "../index.js";
+import { removeElement } from "../index.js";
+import { removeClassElement } from "../index.js";
+import { addClassElement } from "../index.js";
 
 // RPG GAME
 export class Game {
@@ -24,10 +28,17 @@ export class Game {
   static minPlayers = 2;
   static maxPlayers = 5;
 
+  // ordre aleatoire des joueurs
+  static #shuffle(players) {
+    return players.sort(() => Math.random() - 0.5);
+  }
+
   // création des joueurs par défauts
   static newAiPlayers() {
     let aiPlayers = Game.defaultPlayers.map((aiPlayer, i) => {
-      return new aiPlayer.class(aiPlayer.player);
+      let newPlayer = new aiPlayer.class(aiPlayer.player);
+      newPlayer.player_name += `_${Math.round(Math.random() * 90) + 10}`;
+      return newPlayer;
     });
     return aiPlayers;
   }
@@ -36,36 +47,32 @@ export class Game {
   constructor(players) {
     this.numberOfPlayers = 5; // initie le nombre de players
     this.turnLeft = 10; // nombre de tours restants
+    this.turnCount = 0;
     this.combat = 2; // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = players; // players au départ de la partie
     this.playersLeft = this.players; // players restants à jouer (not dead) = gagnants en fin de partie
-    this.turnCount = 1;
+    this.player = ""; // joueur qui est en train de jouer
+    this.playCount = 0;
+    this.deadCount = 0;
   }
 
   //  ** SETTING * //
   settings() {
-    this.numberOfPlayers = parseInt(this.getIntput("nbreRadio")); // initie le nombre de players
+    this.numberOfPlayers = parseInt(getInput("nbreRadio")); // initie le nombre de players
     // mode  Survival / x-Turn
     // nombre de tours restants
-    this.turnLeft = parseInt(this.getIntput("turnNumberInput"));
-    this.combat = parseInt(this.getIntput("combatRadio")); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
+    this.turnLeft = parseInt(getInput("turnNumberInput"));
+    this.combat = parseInt(getInput("combatRadio")); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
-  }
-
-  // récupérer les infos formulaire
-  getIntput(paraName) {
-    let url_string = window.location.href; // www.test.com?filename=test
-    let url = new URL(url_string);
-    let paramValue = url.searchParams.get(paraName);
-    return paramValue;
   }
 
   // Sélection des joueurs
   setPlayers(number) {
     let players = [];
+    let aiPlayers = Game.newAiPlayers();
     // en fonction du mode Combat
     switch (this.combat) {
-      // P vs P : le user choisi chaque joueur
+      // P vs P : le user choisi tous les joueurs
       case 1:
         for (let i = 0; i < this.numberOfPlayers; i++) {
           players.push(this.newHumanPlayer(i + 1));
@@ -73,24 +80,24 @@ export class Game {
         break;
       // P vs AI : le user choisi 1 joueur et AI le reste
       case 2:
-        players = this.#shuffle(Game.newAiPlayers()).slice(0, number - 1);
+        players = aiPlayers.slice(0, number - 1);
         players.push(this.newHumanPlayer());
         break;
       // AI vs AI: création auto des joueurs
       default:
-        players = this.#shuffle(Game.newAiPlayers()).slice(0, number);
+        players = aiPlayers.slice(0, number);
         break;
     }
     this.playersLeft = players;
-    return players;
+    return Game.#shuffle(players);
   }
 
   // nouveau joueur humain
   newHumanPlayer(number = 1) {
     let playerClass = Game.defaultPlayers.find(
-      (p) => p.class.name == this.getIntput(`class${number}`)
+      (p) => p.class.name == getInput(`class${number}`)
     ).class;
-    let player = new playerClass(this.getIntput(`name${number}`));
+    let player = new playerClass(getInput(`name${number}`));
     // nom par défaut si vide
     if (!player.player_name) {
       player.player_name = playerClass.playerName();
@@ -100,53 +107,76 @@ export class Game {
     return player;
   }
 
-  //  GAME PLAY ** //
+  //  *********** GAME PLAY ************* //
   // début de la partie
   startGame() {
     this.settings();
     this.watchStats();
-    document.getElementById("nextTurn").classList.toggle("collapse");
-
-    // do {
-
-    //   this.startTurn();
-    // } while (!this.isOver());
+    removeClassElement("skipTurnBtn", "invisible");
   }
 
   // début du tour
   startTurn() {
-    this.watchStats();
+    if (!this.skipturn()){ return false};
     // effacer la div du turn
-    document.getElementById("gameplay").remove();
+    removeElement("gameplayHistory");
     // recréer la div du turn
-    addText("", "div", "bg-light border p-3", "gameplaySection", "gameplay");
-    addText(` Tour n° ${this.turnCount}  `, "h3", "text-primary px-0");
-    addText('', 'hr');
-    // Affichage des états des joueurs
-    // Appel des players (ordre aléatoire)
-    this.#shuffle(this.playersLeft).forEach((player) => {
-      // joueur en vie
-      if (!player.isDead()) {
-        addText(`C'est à ${player.player_name} de jouer :`, "h5", "px-0 my-2");
-        // action
-        if (player.ai) {
-          this.aiPlay(player);
-        } else {
-          // action human
-          this.humanPlay(player);
-        }
-      }
-    });
+    addElement(
+      "",
+      "div",
+      "bg-light border p-3",
+      "gameplaySection",
+      "gameplayHistory"
+    );
+    addElement(` Tour n° ${this.turnCount}  `, "h3", "text-primary px-0");
+    addElement("", "hr");
 
-    // Fin du tour
-    this.skipturn();
+    // Affichage des états des joueurs
+    this.playersLeft = this.checkPlayersLeft();
+    this.watchStats();
+    this.playCount = 0;
+    this.playerTurn();
+  }
+
+  // Tour du joueur
+  playerTurn() {
+    let auto = true;
+    while (auto) {
+      if (this.players[this.playCount]) {
+        this.player = this.players[this.playCount];
+        // player en vie
+        if (this.player.hp > 0) {
+          addElement(
+            `C'est à ${this.player.player_name} de jouer :`,
+            "h5",
+            "px-0 my-2"
+          );
+          // Ai joue automatiquement
+          if (this.player.ai) {
+            this.aiPlay(this.player);
+            this.watchStats();
+            this.playCount++;
+          } else {
+            // human input ( boutons )
+            removeClassElement("simpleAttack", "invisible");
+            removeClassElement("specialAttack", "invisible");
+            auto = false;
+          }
+        } else {
+          this.playCount++;
+        }
+      } else {
+        this.player = "";
+        auto = false;
+      }
+    }
   }
 
   // Passage au tour suivant
   skipturn() {
     // enlever les morts
     this.playersLeft = this.checkPlayersLeft();
-
+    this.players = Game.#shuffle(this.players);
     this.turnCount++;
     if (this.turnLeft > 0) {
       this.turnLeft--;
@@ -154,8 +184,9 @@ export class Game {
     // verifier conditions de fin de partie
     if (this.isOver()) {
       this.endGame();
-      document.getElementById("nextTurn").classList.toggle("collapse");
+      return false;
     }
+    return true;
   }
 
   // Conditions de fin de partie
@@ -173,23 +204,26 @@ export class Game {
 
   // fin de partie (vainqueurs)
   endGame() {
-    addText(` FIN DE LA PARTIE  `, "h3");
-    addText(` Classement: `);
+    addElement("Fin de la Partie", "h3", "mt-3 text-primary");
+    addElement("", "hr");
+    addElement(" Classement: ", "h5", "my-2");
     // joueurs restants gagnent
     this.playersLeft.forEach((player) => {
       player.status = "winner";
     });
 
     // affichage de tous les joueurs
-    addText(``, "ol", "list-group", "gameplay", "olWinnners");
+    addElement(``, "ol", "list-group", "gameplayHistory", "olWinnners");
     let players = this.players.sort((a, b) => b.hp - a.hp);
     players.forEach((player) => {
       let text = `${player.player_name} (${player.ai ? "ai-" : "h-"}${
         player.class_name
       }) : hp: ${player.hp} (${player.status})`;
-      addText(text, "li", "list-group-item", "olWinnners");
+      addElement(text, "li", "list-group-item", "olWinnners");
     });
-    document.getElementById("winners").classList.toggle("collapse");
+
+    addClassElement("skipTurnBtn", "invisible");
+    removeClassElement("winners", "collapse");
     this.watchStats();
   }
 
@@ -200,11 +234,13 @@ export class Game {
     let bestVictim = this.victims(player)[0];
     // choix de l'attaque random
     let boolean = Math.random() >= 0.25; // 25% attaque simple et 75 % attaque spéciale ?
+    let play;
     if (boolean) {
-      return player.specialAttack(bestVictim);
+      play = player.specialAttack(bestVictim);
     } else {
-      return player.attacks(bestVictim);
+      play = player.attacks(bestVictim);
     }
+    return play;
   }
 
   // // Action de jeu de l'humain
@@ -213,61 +249,35 @@ export class Game {
     this.selectAttack(player, this.selectVictim(player));
   }
 
-  // choix de la victime
-  selectVictim(player) {
-    // Liste des victime + création du menu
-    let victims = this.victims(player);
-    // reste 1 victime: pas d'input demandé
-    if (victims.length == 1) {
-      return victims[0];
-    }
-
-    let menu = victims.map((victim, i) => {
-      return `${i + 1}. ${victim.player_name} (${victim.class_name}) | hp: ${
-        victim.hp
-      }/${victim.hp_max}`;
-    });
-
-    let userInput = "";
-    while (!userInput || userInput < 1 || userInput > victims.length) {
-      userInput = parseInt(
-        window.prompt(
-          `${player.player_name} choisis ta victime : \n ${menu.join(`\n`)}`
-        )
-      );
-    }
-    return victims[userInput - 1];
+  // sélection de la victim (nom) (on ne peut le relier directement auxp players du Game)
+  selectVictim(e) {
+    return (document.getElementById("victim").innerText = e.target.id);
   }
 
-  // choix de l'attaque
-  selectAttack(player, victim) {
-    // création du menu
-    let menu = `1. Simple attaque => dégâts: ${player.dmg}\n`;
-    menu += `2. ${player.special}  => `;
-    if (player.mana_cost) {
-      menu += `mana: ${player.mana_cost}. `;
-    }
-    if (player.dmg_spe) {
-      menu += `dégâts: ${player.dmg_spe}. `;
-    }
-    if (player.self_hp) {
-      menu += `hp: +${player.self_hp}. `;
-    }
+  // retrouver la victime à partie du nom
+  findVictim() {
+    let victimName = document.getElementById("victim").innerText;
+    return this.playersLeft.find((v) => v.player_name == victimName);
+  }
 
-    // Choix du user
-    let userInput = "";
-    while (!userInput || userInput < 1 || userInput > 2) {
-      userInput = parseInt(
-        window.prompt(`${player.player_name} choisis ton attaque: \n ${menu}`)
-      );
-    }
+  simpleAttack() {}
 
-    if (userInput == 1) {
-      player.attacks(victim);
-    } else {
-      player.specialAttack(victim);
+  // Human special
+  specialAttack() {
+    let victim = this.findVictim();
+    if (!victim || this.player == victim || !victim) {
+      alert("Choisis une victime");
+    }
+    if (this.player.specialAttack(victim)) {
+      this.watchStats();
+      addClassElement("simpleAttack", "invisible");
+      addClassElement("specialAttack", "invisible");
+      document.getElementById("victim").innerText = "";
+      this.playCount++;
+      this.playerTurn();
     }
   }
+
   //  ** HELPERS * //
   // retrait des joueurs morts
   checkPlayersLeft(players = this.playersLeft) {
@@ -277,34 +287,24 @@ export class Game {
   // Affichage des stats
   watchStats(players = this.playersLeft) {
     // enlever le ul
-    document.getElementById("ulStats").remove();
-
+    removeElement("ulStats");
     // créer le ul
-    addText("", "ul", "list-group", "divStats", "ulStats");
+    addElement("", "ul", "list-group", "divStats", "ulStats");
+
     // créer les li
+    let liClass = "list-group-item list-group-item-action";
+
     let ai = "";
-    for (const player of players) {
-      player.ai ? (ai = "ai-") : (ai = "h-");
-      let text = `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
-      addText(text, "li", "list-group-item", "ulStats");
+    for (let player of players) {
+      let text = `${player.player_name} (${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
+      addElement(text, "li", liClass, "ulStats", player.player_name);
+    }
+    // ajouter event Listener : la fonction au click
+    let liVictims = document.getElementsByClassName("list-group-item-action");
+    for (let victim of liVictims) {
+      victim.addEventListener("click", this.selectVictim);
     }
   }
-
-  // watchStats(players = this.playersLeft) {
-  //   for (let i = 0; i < 5; i++) {
-  //     let li = document.getElementById(`p${i + 1}`);
-
-  //     if (i < players.length) {
-  //       let player = players[i];
-  //       let ai = "";
-  //       player.ai ? (ai = "ai-") : (ai = "h-");
-
-  //       li.innerText = `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
-  //     } else {
-  //       li.innerText = "";
-  //     }
-  //   }
-  // }
 
   // sélection des victimes disponibles
   victims(player) {
@@ -317,10 +317,5 @@ export class Game {
     });
 
     return victims;
-  }
-
-  // ordre aleatoire des joueurs
-  #shuffle(players) {
-    return players.sort(() => Math.random() - 0.5);
   }
 }

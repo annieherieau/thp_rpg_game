@@ -37,12 +37,19 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="game.html"
+                  >Accueil
+                  <span class="">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a
                   class="nav-link"
                   href="https://github.com/annieherieau/thp_rpg_js"
                   >Git Repo</a
                 >
               </li>
+
             </ul>
           </div>
         </div>
@@ -54,26 +61,33 @@
       <button onclick="launchApp()" class="btn btn-primary my-3 w-100">
         Nouvelle partie
       </button>
-
+      
       <!-- STATS -->
       <section id="stats">
-        <h4 id="winners" class="collapse">Vainqueur(s)</h4>
+        <h4 id="winners" class="text-center collapse">Vainqueur(s)</h4>
         <div class="" id="divStats">
           <ul class="list-group" id="ulStats">
           </ul>
         </div>
-        <button onclick="window.rpgGame.watchStats();window.rpgGame.startTurn()" class="btn btn-primary my-2 float-end w-25 collapse" id="nextTurn">Tour suivant</button>
+        <div>
+          <button onclick="rpgGame.simpleAttack();" class="btn btn-info my-2 w-100 invisible" id="simpleAttack">Attaque Simple</button>
+          <button onclick="rpgGame.specialAttack();" class="btn btn-info my-2 w-100 invisible" id="specialAttack">Attaque Spéciale</button>
+        </div>
+        <p id="victim"></p>
+        <div>
+          <button onclick="rpgGame.startTurn();" class="btn btn-outline border-primary my-2 w-100 invisible" id="skipTurnBtn"> >> Nouveau Tour</button>
+        </div>
       </section>
-
+      
+      
       <!-- GAMEPLAY -->
       <section id="gameplaySection" class="mt-5">
-        <div id="gameplay" class=""></div>
+        <div id="gameplayHistory" class=""></div>
       </section>
     </main>
 
     <!-- javascript -->
     <script type="module" src="./index.js"></script>
-    <script src="./script.js"></script>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script
