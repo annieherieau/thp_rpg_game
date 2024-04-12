@@ -1,3 +1,5 @@
+import { addText } from "./helpers.js";
+
 // Classe de joueur de base
 export class Character {
   // méthode de la classe
@@ -31,9 +33,7 @@ export class Character {
     // verifier si l'attaque est possible
     if (this.canAttack(victim)) {
       // OUI
-      console.log(
-        `${this.player_name} attaque ${victim.player_name}`
-      );
+      addText(`${this.player_name} attaque ${victim.player_name}`);
       this.#dealDamage(victim, damage);
       return true;
     } else {
@@ -43,7 +43,7 @@ export class Character {
 
   // se soigner
   takeCare(heal) {
-    if (this.hp == this.hp_max){
+    if (this.hp == this.hp_max) {
       return false;
     }
     // géré la différence de hp pour affichage
@@ -51,9 +51,7 @@ export class Character {
     heal = heal <= hp_dif ? heal : heal - hp_dif;
 
     (this.hp += heal) > this.hp_max ? (this.hp = this.hp_max) : this.hp;
-    console.log(
-      `${this.player_name} se soigne avec ${heal} pv => hp : ${this.hp}`
-    );
+    addText(`${this.player_name} se soigne avec ${heal} pv => hp : ${this.hp}`);
   }
 
   // lancer une attaque spéciale:  (true)
@@ -66,15 +64,15 @@ export class Character {
     }
     // si mana suffisant
     if (!this.checkMana()) {
-      console.log(`Mana insuffisant... attaque normale`);
+      addText(`Mana insuffisant... attaque normale`);
       this.attacks(victim);
       return false;
     }
 
     // Execution de l'attaque
-    console.log(`~~~ ! ${(this.special).toUpperCase()} ! ~~~`);
+    addText(`~~~ ! ${this.special.toUpperCase()} ! ~~~`);
     // mana
-    if(this.mana_cost){
+    if (this.mana_cost) {
       this.#useMana(this.mana_cost);
     }
     // attaque
@@ -103,15 +101,15 @@ export class Character {
   // Verifier si l'attaque est possible
   canAttack(victim) {
     if (victim.isDead()) {
-      console.log(`Attaque impossible: ${victim.player_name} est mort(e)`);
+      addText(`Attaque impossible: ${victim.player_name} est mort(e)`);
       return false;
     }
     if (this.isDead()) {
-      console.log(`Attaque impossible: ${this.player_name} est mort(e)`);
+      addText(`Attaque impossible: ${this.player_name} est mort(e)`);
       return false;
     }
     if (this == victim) {
-      console.log(
+      addText(
         `Attaque impossible: ${this.player_name} ne peut s'attaquer lui-même`
       );
       return false;
@@ -129,7 +127,7 @@ export class Character {
   // Utiliser le Mana (privée car appelé par une attaque)
   #useMana(mana_cost) {
     this.mana -= this.mana_cost;
-    console.log(
+    addText(
       `${this.player_name} utilise ${mana_cost} mp => Mana: ${this.mana}`
     );
   }
@@ -149,10 +147,10 @@ export class Character {
   #takeDamage(damage) {
     // appliquer les dommages
     (this.hp -= damage) > 0 ? this.hp : (this.hp = 0);
-    console.log(`${this.player_name} pert ${damage} pv => hp: ${this.hp}`);
+    addText(`${this.player_name} pert ${damage} pv => hp: ${this.hp}`);
 
     // verifier si mort
-    this.isDead() ? console.log(`${this.player_name} est mort !`) : "";
+    this.isDead() ? addText(`${this.player_name} est mort !`) : "";
     return true;
   }
 

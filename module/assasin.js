@@ -1,4 +1,5 @@
 import { Character } from "./character.js";
+import { addText } from "./helpers.js";
 
 // Assassin (rusé et fourbe)
 export class Assassin extends Character {
@@ -18,23 +19,23 @@ export class Assassin extends Character {
     this.shadowShield = false; // déclenché par Special: ne prend pas de dégât au tours suivant
   }
   // activation du ShadowShield
-  specialAttack(victim){
-    if (this.canAttack(victim)){
-      if (this.checkMana()){ 
+  specialAttack(victim) {
+    if (this.canAttack(victim)) {
+      if (this.checkMana()) {
         this.shadowShield = true;
-        console.log(`ShadowShied activé`);
+        addText(`ShadowShied activé`);
       }
-        super.specialAttack(victim);
-        return true;
-    }else{
+      super.specialAttack(victim);
+      return true;
+    } else {
       return false;
     }
   }
 
   // Prise en compte du ShadowShield
-  takeDamage(damage){
-    if (this.shadowShield){
-      console.log(`${this.player_name} utilise ShadowShield !`);
+  takeDamage(damage) {
+    if (this.shadowShield) {
+      addText(`${this.player_name} utilise ShadowShield !`);
       this.shadowShield = false;
       damage = 0;
     }

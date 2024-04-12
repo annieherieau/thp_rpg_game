@@ -1,4 +1,5 @@
 import { Character } from "./character.js";
+import { addText } from "./helpers.js";
 
  // Monk (prètre qui peut se guérir)
  export class Monk extends Character {

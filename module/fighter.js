@@ -1,4 +1,5 @@
 import { Character } from "./character.js";
+import { addText } from "./helpers.js";
 
 // Fighter : combattant équilibré
 export class Fighter extends Character {
@@ -21,37 +22,28 @@ export class Fighter extends Character {
 
   // DARK VISION : au prochain tour 2 dégats de moins par coup reçu (?)
   // activation du visionShield
-  specialAttack(victim){
-    if (this.canAttack(victim)){
-      if (this.checkMana()){ 
-        this.visionShield = true; 
-        console.log(`VisionShied activé`);
+  specialAttack(victim) {
+    if (this.canAttack(victim)) {
+      if (this.checkMana()) {
+        this.visionShield = true;
+        addText(`VisionShied activé`);
       }
-        super.specialAttack(victim);
-        return true;
-    }else{
+      super.specialAttack(victim);
+      return true;
+    } else {
       return false;
     }
   }
 
   // Prise en compte du visionShield
-  takeDamage(damage){
-    if (this.visionShield){
-      console.log(`${this.player_name} prend ${this.shield} dégâts de moins grâce à VisionShield !`);
+  takeDamage(damage) {
+    if (this.visionShield) {
+      addText(
+        `${this.player_name} prend ${this.shield} dégâts de moins grâce à VisionShield !`
+      );
       this.visionShield = false;
-      damage-= this.shield;
+      damage -= this.shield;
     }
     super.takeDamage(damage);
   }
-
-
 }
-
-// console.log(Fighter.classData());
-// let player1 = new Fighter();
-// console.log(player1.data());
-// let player2 = new Fighter("player2");
-// console.log(player2.data());
-// player1.specialAttack(player2);
-// player1.specialAttack(player2);
-// player1.specialAttack(player2);
