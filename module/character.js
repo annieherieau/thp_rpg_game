@@ -72,7 +72,7 @@ export class Character {
     }
 
     // Execution de l'attaque
-    addElement(`~~~ ! ${this.special.toUpperCase()} ! ~~~`, 'p', 'px-3 my-1 text-info');
+    addElement(`~~~ ! ${this.special.toUpperCase()} ! ~~~`, 'p', 'px-3 my-1 text-warning');
     // mana
     if (this.mana_cost) {
       this.#useMana(this.mana_cost);
@@ -103,11 +103,11 @@ export class Character {
   // Verifier si l'attaque est possible
   canAttack(victim) {
     if (victim.isDead()) {
-      addElement(`Attaque impossible: ${victim.player_name} est mort(e)`, 'p', 'px-3 text-danger');
+      addElement(`Attaque impossible: ${victim.player_name} est mort(e)`, 'p', 'px-3 text-warning');
       return false;
     }
     if (this.isDead()) {
-      addElement(`Attaque impossible: ${this.player_name} est mort(e)`, 'p', 'px-3 text-danger');
+      addElement(`Attaque impossible: ${this.player_name} est mort(e)`, 'p', 'px-3 text-warning');
       return false;
     }
     if (this == victim) {
@@ -152,7 +152,7 @@ export class Character {
     addElement(`${this.player_name} pert ${damage} pv => hp: ${this.hp}`);
 
     // verifier si mort
-    this.isDead() ? addElement(`${this.player_name} est mort !`, 'p', 'px-3 text-danger') : "";
+    this.isDead() ? addElement(`${this.player_name} est mort !`, 'p', 'px-3 text-warning') : "";
     return true;
   }
 

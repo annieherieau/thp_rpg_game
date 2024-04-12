@@ -110,7 +110,7 @@ export class Game {
   startGame() {
     this.settings();
     this.watchStats();
-    removeClassElement("skipTurnBtn", "invisible");
+    removeClassElement("colonne2", "invisible");
   }
 
   // début du tour
@@ -122,11 +122,11 @@ export class Game {
     addElement(
       "",
       "div",
-      "bg-light border p-3",
+      "p-3",
       "gameplaySection",
       "gameplayHistory"
     );
-    addElement(` Tour n° ${this.turnCount}  `, "h3", "text-primary px-0");
+    addElement(` Tour n° ${this.turnCount}  `, "h3", "px-0");
     addElement("", "hr");
 
     // Affichage des états des joueurs
@@ -156,8 +156,8 @@ export class Game {
             this.playCount++;
           } else {
             // human input ( boutons )
-            removeClassElement("simpleAttack", "invisible");
-            removeClassElement("specialAttack", "invisible");
+            removeClassElement("humanPlay", "collapse");
+            addClassElement("skipTurnBtn", "invisible");
             auto = false;
           }
         } else {
@@ -202,7 +202,7 @@ export class Game {
 
   // fin de partie (vainqueurs)
   endGame() {
-    addElement("Fin de la Partie", "h3", "mt-3 text-primary");
+    addElement("Fin de la Partie", "h3", "mt-3");
     addElement("", "hr");
     addElement(" Classement: ", "h5", "my-2");
     // joueurs restants gagnent
@@ -265,9 +265,8 @@ export class Game {
     }
     if (this.player.attacks(victim)) {
       this.watchStats();
-      addClassElement("simpleAttack", "invisible");
-      addClassElement("specialAttack", "invisible");
-      document.getElementById("victim").innerText = "";
+      addClassElement("humanPlay", "collapse");
+      document.getElementById("victim").innerText = "Choisis ta victime";
       this.playCount++;
       this.playerTurn();
     }
@@ -281,9 +280,9 @@ export class Game {
     }
     if (this.player.specialAttack(victim)) {
       this.watchStats();
-      addClassElement("simpleAttack", "invisible");
-      addClassElement("specialAttack", "invisible");
-      document.getElementById("victim").innerText = "";
+      document.getElementById("victim").innerText =  "Choisis ta victime";
+      addClassElement("humanPlay", "collapse");
+      removeClassElement("skipTurnBtn", "invisible");
       this.playCount++;
       this.playerTurn();
     }
