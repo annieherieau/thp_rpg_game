@@ -1,4 +1,5 @@
 import { Character } from "./character.js";
+import { addText } from "./helpers.js";
 
 // Paladin : chevalier puissant et défensif
 export class Paladin extends Character {

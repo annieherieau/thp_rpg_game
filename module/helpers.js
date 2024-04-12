@@ -5,4 +5,10 @@ export function getInput(paraName){
     return paramValue;
 }
 
-// document.addEventListener('onclick')
+export function addText(text, balise="p"){
+  // créer élément
+let div = document.createElement(balise);
+div.innerText = text;
+let parent = document.getElementById("gameplay");
+parent.append(div);
+}

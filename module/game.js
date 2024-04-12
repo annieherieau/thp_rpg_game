@@ -7,6 +7,7 @@ import { Berzerker } from "./berzerker.js";
 import { Assassin } from "./assasin.js";
 import { Wizard } from "./wizard.js";
 import { Fireball } from "./fireball.js";
+import { addText } from "./helpers.js";
 
 // RPG GAME
 export class Game {
@@ -41,23 +42,22 @@ export class Game {
     this.turnCount = 1;
   }
 
-  //  ************** SETTING ************* //
-  settings(){
-    this.numberOfPlayers = parseInt(this.getIntput('nbreRadio')); // initie le nombre de players
+  //  ** SETTING * //
+  settings() {
+    this.numberOfPlayers = parseInt(this.getIntput("nbreRadio")); // initie le nombre de players
     // mode  Survival / x-Turn
     // nombre de tours restants
-    this.turnLeft = parseInt(this.getIntput('turnNumberInput')); 
-    this.combat = parseInt(this.getIntput('combatRadio')); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
+    this.turnLeft = parseInt(this.getIntput("turnNumberInput"));
+    this.combat = parseInt(this.getIntput("combatRadio")); // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
-
   }
 
   // récupérer les infos formulaire
-  getIntput(paraName){
+  getIntput(paraName) {
     let url_string = window.location.href; // www.test.com?filename=test
-      let url = new URL(url_string);
-      let paramValue = url.searchParams.get(paraName);
-      return paramValue;
+    let url = new URL(url_string);
+    let paramValue = url.searchParams.get(paraName);
+    return paramValue;
   }
 
   // Sélection des joueurs
@@ -68,7 +68,7 @@ export class Game {
       // P vs P : le user choisi chaque joueur
       case 1:
         for (let i = 0; i < this.numberOfPlayers; i++) {
-          players.push(this.newHumanPlayer(i+1));
+          players.push(this.newHumanPlayer(i + 1));
         }
         break;
       // P vs AI : le user choisi 1 joueur et AI le reste
@@ -82,33 +82,34 @@ export class Game {
         break;
     }
     this.playersLeft = players;
-    // console.log(players);
-    // this.watchStats(players);
-    console.log(`-------------------------------`);
     return players;
   }
 
   // nouveau joueur humain
   newHumanPlayer(number = 1) {
-    let playerClass = Game.defaultPlayers.find( p => p.class.name == this.getIntput(`class${number}`)).class;
+    let playerClass = Game.defaultPlayers.find(
+      (p) => p.class.name == this.getIntput(`class${number}`)
+    ).class;
     let player = new playerClass(this.getIntput(`name${number}`));
     // nom par défaut si vide
-    if (!player.player_name){ player.player_name = playerClass.playerName()};
+    if (!player.player_name) {
+      player.player_name = playerClass.playerName();
+    }
     // Humain
     player.ai = false;
     return player;
   }
 
-  // ************ GAME PLAY ************** //
+  //  GAME PLAY ** //
   // début de la partie
   startGame() {
     this.settings();
     this.watchStats();
-    document.getElementById('nextTurn').classList.toggle('collapse');
-    document.getElementById('nextTurn').classList.toggle('collapse');
+    document.getElementById("nextTurn").classList.toggle("collapse");
+    document.getElementById("nextTurn").classList.toggle("collapse");
 
     // do {
-      
+
     //   this.startTurn();
     // } while (!this.isOver());
   }
@@ -116,16 +117,13 @@ export class Game {
   // début du tour
   startTurn() {
     this.watchStats();
-    console.log(
-      `***************** Tour n° ${this.turnCount} ***************** `
-    );
+    addText(` Tour n° ${this.turnCount}  `, "h3");
     // Affichage des états des joueurs
     // Appel des players (ordre aléatoire)
     this.#shuffle(this.playersLeft).forEach((player) => {
       // joueur en vie
       if (!player.isDead()) {
-        console.log(`----------------------------------------`);
-        console.log(`C'est à ${player.player_name} de jouer :`);
+        addText(`C'est à ${player.player_name} de jouer :`, "h5");
         // action
         if (player.ai) {
           this.aiPlay(player);
@@ -137,7 +135,7 @@ export class Game {
     });
 
     // fin du tour
-    console.log(`********************************************* `);
+    addText(``, "hr");
     // afficher un bouton pour skipTurn
     this.skipturn();
   }
@@ -176,10 +174,10 @@ export class Game {
     this.playersLeft.forEach((player) => {
       player.status = "winner";
     });
-    console.log(`************ FIN DE LA PARTIE ************ `);
-    console.log(`************   Vainqueur(s)   ************ `);
+    addText(` FIN DE LA PARTIE  `, "h3");
+    addText(`Vainqueur(s)`, "h5");
     this.watchStats();
-     document.getElementById('nextTurn').classList.toggle('collapse');
+    document.getElementById("nextTurn").classList.toggle("collapse");
   }
 
   // Action de jeu de l'AI
@@ -188,7 +186,7 @@ export class Game {
     // la plus affaiblie
     let bestVictim = this.victims(player)[0];
     // choix de l'attaque random
-    let boolean = Math.random() >= 0.25;  // 25% attaque simple et 75 % attaque spéciale ?
+    let boolean = Math.random() >= 0.25; // 25% attaque simple et 75 % attaque spéciale ?
     if (boolean) {
       return player.specialAttack(bestVictim);
     } else {
@@ -207,7 +205,9 @@ export class Game {
     // Liste des victime + création du menu
     let victims = this.victims(player);
     // reste 1 victime: pas d'input demandé
-    if (victims.length == 1){ return victims[0]};
+    if (victims.length == 1) {
+      return victims[0];
+    }
 
     let menu = victims.map((victim, i) => {
       return `${i + 1}. ${victim.player_name} (${victim.class_name}) | hp: ${
@@ -218,7 +218,9 @@ export class Game {
     let userInput = "";
     while (!userInput || userInput < 1 || userInput > victims.length) {
       userInput = parseInt(
-        window.prompt(`${player.player_name} choisis ta victime : \n ${menu.join(`\n`)}`)
+        window.prompt(
+          `${player.player_name} choisis ta victime : \n ${menu.join(`\n`)}`
+        )
       );
     }
     return victims[userInput - 1];
@@ -253,7 +255,7 @@ export class Game {
       player.specialAttack(victim);
     }
   }
-  //  ************** HELPERS ************* //
+  //  ** HELPERS * //
   // retrait des joueurs morts
   checkPlayersLeft(players = this.playersLeft) {
     return players.filter((player) => player.hp > 0);
@@ -262,15 +264,15 @@ export class Game {
   // Affichage des stats
   watchStats(players = this.playersLeft) {
     for (let i = 0; i < 5; i++) {
-      let li = document.getElementById(`p${i+1}`);
+      let li = document.getElementById(`p${i + 1}`);
 
-      if (i < players.length){
+      if (i < players.length) {
         let player = players[i];
         let ai = "";
         player.ai ? (ai = "ai-") : (ai = "h-");
-        
+
         li.innerText = `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
-      }else{
+      } else {
         li.innerText = "";
       }
     }
