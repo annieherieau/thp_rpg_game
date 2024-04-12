@@ -7,5 +7,5 @@ export function launchApp(){
   window.rpgGame = new Game();
   // rpgGame.settings();
   window.rpgGame.startGame();
-
 }
+
