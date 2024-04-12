@@ -260,7 +260,20 @@ export class Game {
     return this.playersLeft.find((v) => v.player_name == victimName);
   }
 
-  simpleAttack() {}
+  simpleAttack() {
+    let victim = this.findVictim();
+    if (!victim || this.player == victim || !victim) {
+      alert("Choisis une victime");
+    }
+    if (this.player.attacks(victim)) {
+      this.watchStats();
+      addClassElement("simpleAttack", "invisible");
+      addClassElement("specialAttack", "invisible");
+      document.getElementById("victim").innerText = "";
+      this.playCount++;
+      this.playerTurn();
+    }
+  }
 
   // Human special
   specialAttack() {
