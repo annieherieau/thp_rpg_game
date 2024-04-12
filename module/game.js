@@ -116,14 +116,18 @@ export class Game {
   // début du tour
   startTurn() {
     this.watchStats();
-    // removeText('addText');
-    addText(` Tour n° ${this.turnCount}  `, "h3");
+    // effacer la div du turn
+    document.getElementById("gameplay").remove();
+    // recréer la div du turn
+    addText("", "div", "bg-light border p-3", "gameplaySection", "gameplay");
+    addText(` Tour n° ${this.turnCount}  `, "h3", "text-primary px-0");
+    addText('', 'hr');
     // Affichage des états des joueurs
     // Appel des players (ordre aléatoire)
     this.#shuffle(this.playersLeft).forEach((player) => {
       // joueur en vie
       if (!player.isDead()) {
-        addText(`C'est à ${player.player_name} de jouer :`, "h5");
+        addText(`C'est à ${player.player_name} de jouer :`, "h5", "px-0 my-2");
         // action
         if (player.ai) {
           this.aiPlay(player);
@@ -134,9 +138,7 @@ export class Game {
       }
     });
 
-    // fin du tour
-    addText(``, "hr");
-    // afficher un bouton pour skipTurn
+    // Fin du tour
     this.skipturn();
   }
 
@@ -175,19 +177,20 @@ export class Game {
     addText(` Classement: `);
     // joueurs restants gagnent
     this.playersLeft.forEach((player) => {
-      player.status = "winner"; 
+      player.status = "winner";
     });
 
     // affichage de tous les joueurs
-    addText(``, 'ol', 'list-group', 'gameplay', 'olWinnners');
-    let players = this.players.sort((a, b) => b.hp - a.hp );
+    addText(``, "ol", "list-group", "gameplay", "olWinnners");
+    let players = this.players.sort((a, b) => b.hp - a.hp);
     players.forEach((player) => {
-      let text= `${player.player_name} (${player.ai ? 'ai-' : 'h-'}${player.class_name}) : hp: ${player.hp} (${player.status})`;
-      addText(text, 'li', 'list-group-item', 'olWinnners');
-    })
-    document.getElementById("winners").classList.toggle('collapse');
+      let text = `${player.player_name} (${player.ai ? "ai-" : "h-"}${
+        player.class_name
+      }) : hp: ${player.hp} (${player.status})`;
+      addText(text, "li", "list-group-item", "olWinnners");
+    });
+    document.getElementById("winners").classList.toggle("collapse");
     this.watchStats();
-    
   }
 
   // Action de jeu de l'AI
@@ -274,16 +277,16 @@ export class Game {
   // Affichage des stats
   watchStats(players = this.playersLeft) {
     // enlever le ul
-    document.getElementById('ulStats').remove();
-    
+    document.getElementById("ulStats").remove();
+
     // créer le ul
-    addText('', 'ul', 'list-group', 'divStats', 'ulStats');
+    addText("", "ul", "list-group", "divStats", "ulStats");
     // créer les li
     let ai = "";
     for (const player of players) {
       player.ai ? (ai = "ai-") : (ai = "h-");
       let text = `${player.player_name} (${ai}${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
-      addText(text, 'li', 'list-group-item', 'ulStats',);
+      addText(text, "li", "list-group-item", "ulStats");
     }
   }
 

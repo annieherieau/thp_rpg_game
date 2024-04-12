@@ -7,7 +7,7 @@ export function getInput(paraName){
 }
 
 // ajoute le text dans le Dom
-export function addText(text, balise="p", bClass='addText', parentId='gameplay', id=""){
+export function addText(text, balise="p", bClass='my-0 px-3', parentId='gameplay', id=''){
   // créer élément
 let div = document.createElement(balise);
 div.setAttribute("class", bClass);
