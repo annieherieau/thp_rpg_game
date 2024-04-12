@@ -8,6 +8,7 @@ import { Assassin } from "./assasin.js";
 import { Wizard } from "./wizard.js";
 import { Fireball } from "./fireball.js";
 import { addText } from "./helpers.js";
+import { removeText } from "./helpers.js";
 
 // RPG GAME
 export class Game {
@@ -117,6 +118,7 @@ export class Game {
   // début du tour
   startTurn() {
     this.watchStats();
+    removeText('addText');
     addText(` Tour n° ${this.turnCount}  `, "h3");
     // Affichage des états des joueurs
     // Appel des players (ordre aléatoire)
