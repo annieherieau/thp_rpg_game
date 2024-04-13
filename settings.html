@@ -53,25 +53,25 @@
                   <h5 class="w-50">Nombre de joueurs</h5>
                   <div class="d-flex align-items-center m-auto">
                       <div class="form-check mx-2">
-                        <input class="form-check-input" type="radio" name="nbreRadio" id="modeRadio2" value="2">
+                        <input onclick="showPlayers()" class="form-check-input" type="radio" name="nbreRadio" id="modeRadio2" value="2">
                         <label class="form-check-label" for="modeRadio2">
                           2
                         </label>
                       </div>
                       <div class="form-check mx-2">
-                        <input class="form-check-input" type="radio" name="nbreRadio" id="nbreRadio3" value="3">
+                        <input onclick="showPlayers()" class="form-check-input" type="radio" name="nbreRadio" id="nbreRadio3" value="3">
                         <label class="form-check-label" for="nbreRadio3">
                           3
                         </label>
                       </div>
                       <div class="form-check  mx-2">
-                        <input class="form-check-input" type="radio" name="nbreRadio" id="nbreRadio4" value="4" >
+                        <input onclick="showPlayers()" class="form-check-input" type="radio" name="nbreRadio" id="nbreRadio4" value="4" >
                         <label class="form-check-label" for="nbreRadio4">
                           4
                         </label>
                       </div>
                       <div class="form-check mx-2">
-                        <input class="form-check-input" type="radio" name="nbreRadio" id="nbreRadio5" value="5" checked="">
+                        <input onclick="showPlayers()" class="form-check-input" type="radio" name="nbreRadio" id="nbreRadio5" value="5" checked="">
                         <label class="form-check-label" for="nbreRadio5">
                           5
                         </label>
@@ -109,13 +109,13 @@
                   <h5 class="w-25">Mode Combat</h5>
                   <div class="d-flex align-items-center m-auto">
                     <div class="form-check mx-2">
-                      <input onclick='showPlayers(5)' class="form-check-input" type="radio" name="combatRadio" id="combatRadio1" value="1">
+                      <input onclick="showPlayers()" class="form-check-input" type="radio" name="combatRadio" id="combatRadio1" value="1">
                       <label class="form-check-label" for="combatRadio1">
                         Players vs Players
                       </label>
                     </div>
                     <div class="form-check mx-2">
-                      <input onclick='showPlayers(1)' class="form-check-input" type="radio" name="combatRadio" id="combatRadio2" value="2"  checked="">
+                      <input onclick='showPlayers()' class="form-check-input" type="radio" name="combatRadio" id="combatRadio2" value="2"  checked="">
                       <label class="form-check-label" for="combatRadio2">
                         One Player vs AI
                       </label>
