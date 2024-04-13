@@ -67,16 +67,18 @@ export function addClassElement(elementId, elementClass = "collapse") {
   document.getElementById(elementId).classList.add(elementClass);
 }
 
-export function sample(array, number) {
+// renvoie une valeur rzndom du tableau
+export function sample(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
-
+// afficher le input turn
 function showTurn() {
-  document.getElementById("turnNumber").className = "";
+  removeClassElement('turnNumber');
   document.getElementById("turnNumberInput").value = "10";
 }
+// marque le input turn
 function hideTurn() {
-  document.getElementById("turnNumber").className = "collapse";
+  addClassElement('turnNumber');
   document.getElementById("turnNumberInput").value = "-1";
 }
 

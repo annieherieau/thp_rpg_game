@@ -145,6 +145,7 @@ export class Game {
   // Tour du joueur
   playerTurn() {
     let auto = true;
+    
     while (auto) {
       if (this.players[this.playCount]) {
         this.player = this.players[this.playCount];
@@ -162,6 +163,7 @@ export class Game {
             this.playCount++;
           } else {
             // human input ( boutons )
+            document.getElementById('specialAttack').innerText = this.player.special;
             removeClassElement("humanPlay", "collapse");
             addClassElement("skipTurnBtn", "invisible");
             auto = false;

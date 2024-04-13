@@ -121,7 +121,7 @@
                       </label>
                     </div>
                     <div class="form-check mx-2">
-                      <input onclick='showPlayers(0)' class="form-check-input" type="radio" name="combatRadio" id="combatRadio3" value="3">
+                      <input onclick='showPlayers()' class="form-check-input" type="radio" name="combatRadio" id="combatRadio3" value="3">
                       <label class="form-check-label" for="combatRadio3">
                         AI vs AI
                       </label>
@@ -237,69 +237,69 @@
         </form>
       </section>
 
-      <!-- PLAYERS -->
-      <section>
-        <div class="d-flex flex-wrap">
-          <div class="card text-white bg-primary m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
-            <div class="card-header">Fighter</div>
-            <div class="card-body">
-              <h4 class="card-title">Combattant équilibré</h4>
-              <p class="card-text">hp: 12 - mana: 40 - dmg: 4</p>
-              <p class="card-text"><strong>Dark Vision:</strong><br> mana: 20 - dmg: 4 - bouclier 2 hp</p>
+        <!-- PLAYERS -->
+        <section>
+          <div class="d-flex flex-wrap">
+            <div class="card characters text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
+              <div class="card-header">Fighter</div>
+              <div class="card-body">
+                <h4 class="card-title">Combattant équilibré</h4>
+                <p class="card-text">hp: 12 - mana: 40 - dmg: 4</p>
+                <p class="card-text"><strong>Dark Vision:</strong><br> mana: 20 - dmg: 4 - bouclier 2 hp</p>
+              </div>
+            </div>
+            <div class="card characters text-white bg-dark m-1 p-0 border-primary"  style="max-width: 20rem; min-width: 20rem;">
+              <div class="card-header">Paladin</div>
+              <div class="card-body">
+                <h4 class="card-title">Chevalier puissant défensif</h4>
+                <p class="card-text">hp: 16 - mana: 160 - dmg: 3</p>
+                <p class="card-text"><strong>Healing Light:</strong><br> mana: 40 - dmg: 4 - hp: +5</p>
+              </div>
+            </div>
+            <div class="card characters text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
+              <div class="card-header">Monk</div>
+              <div class="card-body">
+                <h4 class="card-title">Prêtre auto-Guérisseur</h4>
+                <p class="card-text">hp: 8 - mana: 200 - dmg: 2</p>
+                <p class="card-text"><strong>Heal:</strong><br> mana: 25 - hp: +5</p>
+              </div>
+            </div>
+            <div class="card characters text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
+              <div class="card-header">Berzerker</div>
+              <div class="card-body">
+                <h4 class="card-title">Bourrin et grosse attaque</h4>
+                <p class="card-text">hp: 8 - mana: 0 - dmg: 4</p>
+                <p class="card-text"><strong>Rage:</strong><br> dmg: dmg+1 - hp: hp-1</p>
+              </div>
+            </div>
+            <div class="card characters text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
+              <div class="card-header">Assassin</div>
+              <div class="card-body">
+                <h4 class="card-title">Renard rusé et fourbe</h4>
+                <p class="card-text">hp: 6 - mana: 100 - dmg: 6</p>
+                <p class="card-text"><strong>Shadow Hit:</strong><br> mana: 20 - dmg: 7 - bouclier 100%</p>
+              </div>
+            </div>
+            <div class="card characters text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
+              <div class="card-header">Wizard</div>
+              <div class="card-body">
+                <h4 class="card-title">Nécromancien, voleur de vie</h4>
+                <p class="card-text">hp: 10 - mana: 200 - dmg: 2</p>
+                <p class="card-text"><strong>Thief of Life:</strong><br> mana: 50 - dmg: 8 - hp: +3 - hp_max: +1<br>
+                 Nécromancie: +mana et +hp_max
+                </p>
+              </div>
+            </div>
+            <div class="card characters text-white bg-dark m-1 p-0 border-primary" style="max-width: 20rem; min-width: 20rem;">
+              <div class="card-header">Fireball</div>
+              <div class="card-body">
+                <h4 class="card-title">Boule de feu et de nerfs</h4>
+                <p class="card-text">hp: 12 - mana: 200 - dmg: 2</p>
+                <p class="card-text"><strong>Big Bang:</strong><br> mana: 25 - dmg: 25</p>
+              </div>
             </div>
           </div>
-          <div class="card text-white bg-secondary m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
-            <div class="card-header">Paladin</div>
-            <div class="card-body">
-              <h4 class="card-title">Chevalier puissant défensif</h4>
-              <p class="card-text">hp: 16 - mana: 160 - dmg: 3</p>
-              <p class="card-text"><strong>Healing Light:</strong><br> mana: 40 - dmg: 4 - hp: +5</p>
-            </div>
-          </div>
-          <div class="card text-white bg-success m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
-            <div class="card-header">Monk</div>
-            <div class="card-body">
-              <h4 class="card-title">Prêtre auto-Guérisseur</h4>
-              <p class="card-text">hp: 8 - mana: 200 - dmg: 2</p>
-              <p class="card-text"><strong>Heal:</strong><br> mana: 25 - hp: +5</p>
-            </div>
-          </div>
-          <div class="card text-white bg-info m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
-            <div class="card-header">Berzerker</div>
-            <div class="card-body">
-              <h4 class="card-title">Bourrin et grosse attaque</h4>
-              <p class="card-text">hp: 8 - mana: 0 - dmg: 4</p>
-              <p class="card-text"><strong>Rage:</strong><br> dmg: dmg+1 - hp: hp-1</p>
-            </div>
-          </div>
-          <div class="card text-white bg-warning m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
-            <div class="card-header">Assassin</div>
-            <div class="card-body">
-              <h4 class="card-title">Renard rusé et fourbe</h4>
-              <p class="card-text">hp: 6 - mana: 100 - dmg: 6</p>
-              <p class="card-text"><strong>Shadow Hit:</strong><br> mana: 20 - dmg: 7 - bouclier 100%</p>
-            </div>
-          </div>
-          <div class="card text-white bg-dark m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
-            <div class="card-header">Wizard</div>
-            <div class="card-body">
-              <h4 class="card-title">Nécromancien, voleur de vie</h4>
-              <p class="card-text">hp: 10 - mana: 200 - dmg: 2</p>
-              <p class="card-text"><strong>Thief of Life:</strong><br> mana: 50 - dmg: 8 - hp: +3 - hp_max: +1<br>
-               Nécromancie: +mana et +hp_max
-              </p>
-            </div>
-          </div>
-          <div class="card text-white bg-danger m-1 p-0" style="max-width: 20rem; min-width: 20rem;">
-            <div class="card-header">Fireball</div>
-            <div class="card-body">
-              <h4 class="card-title">Boule de feu et de nerfs</h4>
-              <p class="card-text">hp: 12 - mana: 200 - dmg: 2</p>
-              <p class="card-text"><strong>Big Bang:</strong><br> mana: 25 - dmg: 25</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
     </main>
     
     
