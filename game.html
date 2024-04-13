@@ -29,7 +29,7 @@
             <ul class="navbar-nav me-auto">
               <li class="nav-item">
                 <a class="nav-link" href="index.html"
-                  >Accueil
+                  >Partie Rapide
                   <span class="visually-hidden">(current)</span>
                 </a>
               </li>
@@ -43,6 +43,7 @@
                 <a
                   class="nav-link"
                   href="https://github.com/annieherieau/thp_rpg_js"
+                  target="_blank"
                   >Git Repo</a
                 >
               </li>
@@ -53,7 +54,7 @@
     </header>
 
     <main class="container">
-      <h1 class="text-primary mt-5 mb-3">RPG Game Js</h1>
+      <h1 class="mt-5 mb-3">RPG Game Js</h1>
 
       <div class="row">
         <!-- COLONNE 1 -->
@@ -69,30 +70,22 @@
           <section id="gameplaySection" class="">
             <div id="gameplayHistory" class=""></div>
           </section>
-
         </div>
         <!-- fin COLONNE 1 -->
 
         <!-- COLONNE 2 -->
-        <div id="colonne2" class="col-6 invisible" >
-          <button
-          class="btn btn-lg btn-primary w-100 my-3"
-          >
-            Joueurs
-          </button>
+        <div id="colonne2" class="col-6 invisible">
+          <button class="btn btn-lg btn-primary w-100 my-3">Joueurs</button>
           <!-- STATS -->
-          <section id="stats" >
+          <section id="stats">
             <h4 id="winners" class="text-center collapse">Vainqueur(s)</h4>
             <div class="" id="divStats">
               <ul class="list-group" id="ulStats"></ul>
             </div>
             <!-- BOUTON ACTION HUMAN PLAYER -->
             <div id="humanPlay" class="collapse">
-              <button id="victim"
-                
-                class="btn btn-outline-secondary my-1 w-100"
-              >
-              Choisis ta victime
+              <button id="victim" class="btn btn-outline-secondary my-1 w-100">
+                Choisis ta victime
               </button>
               <button
                 onclick="rpgGame.simpleAttack();"
@@ -111,16 +104,29 @@
             </div>
           </section>
           <button
-          onclick="rpgGame.startTurn();"
-          class="btn btn-lg btn-secondary w-100 my-3"
-          id="skipTurnBtn"
+            onclick="rpgGame.startTurn();"
+            class="btn btn-lg btn-secondary w-100 my-3"
+            id="skipTurnBtn"
           >
-            Continuer
+            Tour Suivant
           </button>
         </div>
         <!-- fin COLONNE 2 -->
       </div>
     </main>
+    <footer class="bg-dark mt-5 text-center">
+      <div class="p-4">
+        <span class="text-body-secondary text-info"
+          ><a href="https://github.com/annieherieau/" target="_blank"
+            >Annie Hérieau</a
+          >
+          -
+          <a href="https://bootswatch.com/vapor/" target="_blank"
+            >Thème Vapor</a
+          ></span
+        >
+      </div>
+    </footer>
 
     <!-- javascript -->
     <script type="module" src="./index.js"></script>

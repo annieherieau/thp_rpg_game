@@ -96,11 +96,13 @@ function showPlayers(number = 1) {
       break;
   }
 
-  for (let i = 1; i <= maxPlayers; i++) {
+  for (let i = 1; i < maxPlayers; i++) {
     if (i <= number) {
       document.getElementById(`player${i}`).className = "row";
+      document.getElementById(`name${i}`).required = true;
     } else {
-      document.getElementById(`player${i}`).className = "collapse";
+      // document.getElementByID(`player${i}`).className = "collapse";
+      document.getElementById(`name${i}`).required = false;
     }
   }
 }

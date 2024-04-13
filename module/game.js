@@ -153,7 +153,7 @@ export class Game {
         // player en vie
         if (this.player.hp > 0) {
           addElement(
-            `C'est à ${this.player.player_name} de jouer :`,
+            `${this.player.player_name} [${this.player.class_name}] joue :`,
             "h5",
             "px-0 my-2"
           );

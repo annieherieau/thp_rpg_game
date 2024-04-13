@@ -17,4 +17,13 @@ export class Monk extends Character {
     this.mana_cost = 25; // mana cost for make special attack
     this.self_hp = 8; // hp plus : gain de vie du spécial
   }
+
+  specialAttack(victim) {
+    if (this.hp == this.hp_max){
+      addElement('Santé déjà au max... attaque normale', 'p', 'text-warning');
+      return super.attacks(victim);
+    }else{
+      return super.specialAttack(victim);
+    }
+  }
 }
