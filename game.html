@@ -5,16 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootwatch Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/sandstone/bootstrap.min.css"
-    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/styles.css" />
     <title>RPG Game Js</title>
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+      <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">RPG Game Js</a>
           <button
@@ -31,16 +28,16 @@
           <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
               <li class="nav-item">
-                <a class="nav-link active" href="index.html"
+                <a class="nav-link" href="index.html"
                   >Accueil
                   <span class="visually-hidden">(current)</span>
                 </a>
               </li>
+              <li>
+                <a class="nav-link" href="settings.html">Paramètres </a>
+              </li>
               <li class="nav-item">
-                <a class="nav-link" href="game.html"
-                  >Accueil
-                  <span class="">(current)</span>
-                </a>
+                <a class="nav-link active" href="game.html">Partie en cours </a>
               </li>
               <li class="nav-item">
                 <a
@@ -49,7 +46,6 @@
                   >Git Repo</a
                 >
               </li>
-
             </ul>
           </div>
         </div>
@@ -58,32 +54,72 @@
 
     <main class="container">
       <h1 class="text-primary mt-5 mb-3">RPG Game Js</h1>
-      <button onclick="launchApp()" class="btn btn-primary my-3 w-100">
-        Nouvelle partie
-      </button>
-      
-      <!-- STATS -->
-      <section id="stats">
-        <h4 id="winners" class="text-center collapse">Vainqueur(s)</h4>
-        <div class="" id="divStats">
-          <ul class="list-group" id="ulStats">
-          </ul>
+
+      <div class="row">
+        <!-- COLONNE 1 -->
+        <div class="col-6">
+          <!-- BOUTON -->
+          <button
+            onclick="launchApp()"
+            class="btn btn-lg btn-primary w-100 my-3"
+          >
+            Nouvelle partie
+          </button>
+          <!-- GAMEPLAY -->
+          <section id="gameplaySection" class="">
+            <div id="gameplayHistory" class=""></div>
+          </section>
+
         </div>
-        <div>
-          <button onclick="rpgGame.simpleAttack();" class="btn btn-info my-2 w-100 invisible" id="simpleAttack">Attaque Simple</button>
-          <button onclick="rpgGame.specialAttack();" class="btn btn-info my-2 w-100 invisible" id="specialAttack">Attaque Spéciale</button>
+        <!-- fin COLONNE 1 -->
+
+        <!-- COLONNE 2 -->
+        <div id="colonne2" class="col-6 invisible" >
+          <button
+          class="btn btn-lg btn-primary w-100 my-3"
+          >
+            Joueurs
+          </button>
+          <!-- STATS -->
+          <section id="stats" >
+            <h4 id="winners" class="text-center collapse">Vainqueur(s)</h4>
+            <div class="" id="divStats">
+              <ul class="list-group" id="ulStats"></ul>
+            </div>
+            <!-- BOUTON ACTION HUMAN PLAYER -->
+            <div id="humanPlay" class="collapse">
+              <button id="victim"
+                
+                class="btn btn-outline-secondary my-1 w-100"
+              >
+              Choisis ta victime
+              </button>
+              <button
+                onclick="rpgGame.simpleAttack();"
+                class="btn btn-outline-secondary my-1 w-100"
+                id="simpleAttack"
+              >
+                Attaque Simple
+              </button>
+              <button
+                onclick="rpgGame.specialAttack();"
+                class="btn btn-outline-secondary my-1 w-100"
+                id="specialAttack"
+              >
+                Attaque Spéciale
+              </button>
+            </div>
+          </section>
+          <button
+          onclick="rpgGame.startTurn();"
+          class="btn btn-lg btn-secondary w-100 my-3"
+          id="skipTurnBtn"
+          >
+            Continuer
+          </button>
         </div>
-        <p id="victim"></p>
-        <div>
-          <button onclick="rpgGame.startTurn();" class="btn btn-outline border-primary my-2 w-100 invisible" id="skipTurnBtn"> >> Nouveau Tour</button>
-        </div>
-      </section>
-      
-      
-      <!-- GAMEPLAY -->
-      <section id="gameplaySection" class="mt-5">
-        <div id="gameplayHistory" class=""></div>
-      </section>
+        <!-- fin COLONNE 2 -->
+      </div>
     </main>
 
     <!-- javascript -->
