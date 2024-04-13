@@ -20,21 +20,25 @@ export class Wizard extends Character {
 
   // voleur de vie
   specialAttack(victim) {
-      super.specialAttack(victim);
-      if (victim.isDead()) {
-        let hp_wiz = Math.round(victim.hp_max / 3);
-        let mana_wiz = Math.abs(
-          Math.round(victim.mana_max / 3) - (this.mana_max - this.mana)
-        );
-        this.hp_max += hp_wiz;
-        this.mana += mana_wiz;
-        addElement(
-          `${this.player_name} récupère ${mana_wiz} mana et ${hp_wiz} hp max sur le cadavre de ${victim.player_name}`
-        );
-      } else {
-        victim.hp_max -= 1;
-        this.hp_max += 1;
-        addElement(`${this.player_name} vole 1 hp max à ${victim.player_name}`);
+      if (super.specialAttack(victim)){
+        if (victim.isDead()) {
+          let hp_wiz = Math.round(victim.hp_max / 3);
+          let mana_wiz = Math.abs(
+            Math.round(victim.mana_max / 3) - (this.mana_max - this.mana)
+          );
+          this.hp_max += hp_wiz;
+          this.mana += mana_wiz;
+          addElement(
+            `${this.player_name} récupère ${mana_wiz} mana et ${hp_wiz} hp max sur le cadavre de ${victim.player_name}`
+          );
+        } else {
+          victim.hp_max -= 1;
+          this.hp_max += 1;
+          addElement(`${this.player_name} vole 1 hp max à ${victim.player_name}`);
+        }
+        return true;
+      }else{
+        return false;
       }
   }
 }

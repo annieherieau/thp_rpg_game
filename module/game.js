@@ -12,6 +12,8 @@ import { addElement } from "../index.js";
 import { removeElement } from "../index.js";
 import { removeClassElement } from "../index.js";
 import { addClassElement } from "../index.js";
+import { displayElement } from "../index.js";
+import { sample } from "../index.js";
 
 // RPG GAME
 export class Game {
@@ -50,16 +52,15 @@ export class Game {
     this.turnCount = 0;
     this.combat = 2; // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = players; // players au départ de la partie
-    this.playersLeft = this.players; // players restants à jouer (not dead) = gagnants en fin de partie
     this.player = ""; // joueur qui est en train de jouer
-    this.playCount = 0;
-    this.deadCount = 0;
+    this.playCount = 0; // count des tour de joueurs
+    this.losers = []; // joueur dans l'ordre de leur mort
   }
 
   //  ** SETTING * //
   settings() {
     this.numberOfPlayers = parseInt(getInput("nbreRadio")) ? parseInt(getInput("nbreRadio")) : this.numberOfPlayers; // initie le nombre de players
-    this.turnLeft = parseInt(getInput("turnNumberInput")) ? parseInt(getInput("turnNumberInput")) : this.turnLeft; // nombre de tours restants
+    this.turnLeft = parseInt(getInput("turnNumberInput")) ?  parseInt(getInput("turnNumberInput"))+1 : this.turnLeft+1; // nombre de tours restants
     this.combat = parseInt(getInput("combatRadio")) ? parseInt(getInput("combatRadio")) : this.combat; // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
   }
@@ -86,16 +87,19 @@ export class Game {
         players = aiPlayers.slice(0, number);
         break;
     }
-    this.playersLeft = players;
     return Game.#shuffle(players);
   }
 
   // nouveau joueur humain
   newHumanPlayer(number = 1) {
+    // Classe par défaut si pas d'input
+    let inputClass = getInput(`class${number}`) ? getInput(`class${number}`) : sample(Game.defaultPlayers).class.name;
+    let inputName = getInput(`name${number}`) ? getInput(`name${number}`) : sample(Game.defaultPlayers).player;
+    
     let playerClass = Game.defaultPlayers.find(
-      (p) => p.class.name == getInput(`class${number}`)
+      (p) => p.class.name == inputClass
     ).class;
-    let player = new playerClass(getInput(`name${number}`));
+    let player = new playerClass(inputName);
     // nom par défaut si vide
     if (!player.player_name) {
       player.player_name = playerClass.playerName();
@@ -111,13 +115,19 @@ export class Game {
     this.settings();
     this.watchStats();
     removeClassElement("colonne2", "invisible");
+    addClassElement("winners", "collapse");
+    removeElement("gameplayHistory");
+    removeClassElement("skipTurnBtn", "invisible");
+    displayElement('skipTurnBtn', 'Commencer');
   }
 
   // début du tour
   startTurn() {
-    if (!this.skipturn()){ return false};
+    this.losers;
+    this.skipturn();
+    displayElement('skipTurnBtn', 'Tour Suivant');
     // effacer la div du turn
-    removeElement("gameplayHistory");
+    if (document.getElementById('gameplayHistory')){ removeElement("gameplayHistory")};
     // recréer la div du turn
     addElement(
       "",
@@ -126,26 +136,34 @@ export class Game {
       "gameplaySection",
       "gameplayHistory"
     );
-    addElement(` Tour n° ${this.turnCount}  `, "h3", "px-0");
-    addElement("", "hr");
-
+    
     // Affichage des états des joueurs
-    this.playersLeft = this.checkPlayersLeft();
     this.watchStats();
     this.playCount = 0;
-    this.playerTurn();
+    if (this.isOver()){
+      this.endGame();
+    
+    }else{
+      if (this.leftPlayers().length > 1){
+        addElement(` Tour n° ${this.turnCount}  `, "h3", "px-0");
+        addElement("", "hr");
+      }
+      this.playerTurn();
+    }
   }
 
   // Tour du joueur
   playerTurn() {
     let auto = true;
+    
     while (auto) {
       if (this.players[this.playCount]) {
+        auto = !this.isOver();
         this.player = this.players[this.playCount];
         // player en vie
         if (this.player.hp > 0) {
           addElement(
-            `C'est à ${this.player.player_name} de jouer :`,
+            `${this.player.player_name} [${this.player.class_name}] joue :`,
             "h5",
             "px-0 my-2"
           );
@@ -154,8 +172,16 @@ export class Game {
             this.aiPlay(this.player);
             this.watchStats();
             this.playCount++;
+            if (this.leftPlayers().length == 1){
+              displayElement('skipTurnBtn', 'Voir le classement');
+            }
           } else {
             // human input ( boutons )
+            document.getElementById('specialAttack').innerText = this.player.special;
+            if (this.leftPlayers().length == 2){
+              let victim = this.leftPlayers().find(p => p != this.player);
+              displayElement('victim', victim.player_name);
+            }
             removeClassElement("humanPlay", "collapse");
             addClassElement("skipTurnBtn", "invisible");
             auto = false;
@@ -173,24 +199,17 @@ export class Game {
   // Passage au tour suivant
   skipturn() {
     // enlever les morts
-    this.playersLeft = this.checkPlayersLeft();
     this.players = Game.#shuffle(this.players);
     this.turnCount++;
     if (this.turnLeft > 0) {
       this.turnLeft--;
     }
-    // verifier conditions de fin de partie
-    if (this.isOver()) {
-      this.endGame();
-      return false;
-    }
-    return true;
   }
 
   // Conditions de fin de partie
   isOver() {
-    // mode Survival
-    if (this.playersLeft.length == 1) {
+    // mode Survival 
+    if (this.leftPlayers().length == 1) {
       return true;
     }
     // mode x-Turns
@@ -206,22 +225,23 @@ export class Game {
     addElement("", "hr");
     addElement(" Classement: ", "h5", "my-2");
     // joueurs restants gagnent
-    this.playersLeft.forEach((player) => {
+    this.leftPlayers().forEach((player) => {
       player.status = "winner";
     });
-
-    // affichage de tous les joueurs
+    // affichage de du Classement
+    let hallOfFame = this.leftPlayers().sort((a, b) => { return b.hp - a.hp}).concat(this.losers);
     addElement(``, "ol", "list-group", "gameplayHistory", "olWinnners");
-    let players = this.players.sort((a, b) => b.hp - a.hp);
-    players.forEach((player) => {
+    hallOfFame.forEach((player) => {
       let text = `${player.player_name} (${player.ai ? "ai-" : "h-"}${
         player.class_name
-      }) : hp: ${player.hp} (${player.status})`;
+      })${player.hp ? ' - hp: '+ player.hp :''}`;
       addElement(text, "li", "list-group-item", "olWinnners");
     });
 
     addClassElement("skipTurnBtn", "invisible");
+    addClassElement("humanPlay", "collapse");
     removeClassElement("winners", "collapse");
+    
     this.watchStats();
   }
 
@@ -241,12 +261,6 @@ export class Game {
     return play;
   }
 
-  // // Action de jeu de l'humain
-  humanPlay(player) {
-    // choix de la victime
-    this.selectAttack(player, this.selectVictim(player));
-  }
-
   // sélection de la victim (nom) (on ne peut le relier directement auxp players du Game)
   selectVictim(e) {
     return (document.getElementById("victim").innerText = e.target.id);
@@ -255,7 +269,7 @@ export class Game {
   // retrouver la victime à partie du nom
   findVictim() {
     let victimName = document.getElementById("victim").innerText;
-    return this.playersLeft.find((v) => v.player_name == victimName);
+    return this.leftPlayers().find((v) => v.player_name == victimName);
   }
 
   simpleAttack() {
@@ -263,13 +277,7 @@ export class Game {
     if (!victim || this.player == victim || !victim) {
       alert("Choisis une victime");
     }
-    if (this.player.attacks(victim)) {
-      this.watchStats();
-      addClassElement("humanPlay", "collapse");
-      document.getElementById("victim").innerText = "Choisis ta victime";
-      this.playCount++;
-      this.playerTurn();
-    }
+    this.humanEndTurn(this.player.attacks(victim));
   }
 
   // Human special
@@ -278,36 +286,46 @@ export class Game {
     if (!victim || this.player == victim || !victim) {
       alert("Choisis une victime");
     }
-    if (this.player.specialAttack(victim)) {
-      this.watchStats();
-      document.getElementById("victim").innerText =  "Choisis ta victime";
+    this.humanEndTurn(this.player.specialAttack(victim));
+  }
+
+  humanEndTurn(attack){
+    if (attack) {
+      this.watchStats(this.leftPlayers());
       addClassElement("humanPlay", "collapse");
+      document.getElementById("victim").innerText = "Choisis ta victime";
       removeClassElement("skipTurnBtn", "invisible");
+      if (this.leftPlayers().length == 1){addClassElement("skipTurnBtn", "invisible")};
       this.playCount++;
       this.playerTurn();
     }
   }
 
   //  ** HELPERS * //
-  // retrait des joueurs morts
-  checkPlayersLeft(players = this.playersLeft) {
+  // retrait des joueurs morts + Ajout au classement final
+  leftPlayers(players = this.players) {
+    players.forEach((player) => {
+      if (!player.hp && !this.losers.includes(player)){ this.losers.unshift(player) };
+    });
     return players.filter((player) => player.hp > 0);
   }
 
   // Affichage des stats
-  watchStats(players = this.playersLeft) {
+  watchStats(players = this.leftPlayers(), debug=false) {
+    if (!debug) {
     // enlever le ul
     removeElement("ulStats");
     // créer le ul
     addElement("", "ul", "list-group", "divStats", "ulStats");
+    }
 
     // créer les li
     let liClass = "list-group-item list-group-item-action";
-
+    let ulClass = debug ? 'ulDebug' : 'ulStats';
     let ai = "";
     for (let player of players) {
       let text = `${player.player_name} (${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
-      addElement(text, "li", liClass, "ulStats", player.player_name);
+      addElement(text, "li", liClass, ulClass, player.player_name);
     }
     // ajouter event Listener : la fonction au click
     let liVictims = document.getElementsByClassName("list-group-item-action");
@@ -316,16 +334,28 @@ export class Game {
     }
   }
 
+
   // sélection des victimes disponibles
   victims(player) {
     // enlever les morts
-    this.playersLeft = this.checkPlayersLeft();
-    let victims = this.playersLeft.filter((victim) => victim != player);
+    let victims = this.leftPlayers().filter((victim) => victim != player);
     // tri par hp
     victims.sort((a, b) => {
-      a.hp - b.hp;
+      return a.hp - b.hp;
     });
-
     return victims;
+  }
+
+  debug(){
+    this.settings();
+    this.watchStats(this.players, true);
+    displayElement('constructor', Game.name);
+    displayElement('minPlayers', Game.minPlayers);
+    displayElement('maxPlayers', Game.maxPlayers);
+    displayElement('defaultPlayers.length', Game.defaultPlayers.length);
+    displayElement('numberOfPlayers', this.numberOfPlayers);
+    displayElement('turnLeft', this.turnLeft);
+    displayElement('combat', this.combat);
+    
   }
 }

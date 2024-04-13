@@ -7,9 +7,9 @@ export class Fighter extends Character {
     super();
     this.player_name = playerName ? playerName : Fighter.playerName(); // nom du joueur
     this.class_name = Fighter.name;
-    this.hp_max = 12; //  health points maxi
+    this.hp_max = 20; //  health points maxi
     this.hp = this.hp_max; // health points
-    this.mana_max = 40; // mana points maxi
+    this.mana_max = 60; // mana points maxi
     this.mana = this.mana_max; // mana points
     this.dmg = 4; // damage for simple attack
     this.special = "Dark Vision"; // special attack name
