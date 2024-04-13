@@ -9,7 +9,6 @@ window.showPlayers = showPlayers;
 function launchApp(){
   window.rpgGame = new Game();
   window.rpgGame.startGame();
-  window
 }
 
 // Récupère les données du formulaire
@@ -24,6 +23,9 @@ export function removeElement(elementId){
   document.getElementById(elementId).remove();
 }
 
+export function displayElement(elementId, innerText){
+  document.getElementById(elementId).innerText = innerText;
+}
 // ajoute un Dom Element dans le Dom
 export function addElement(text, balise="p", bClass='my-0 px-3', parentId='gameplayHistory', id=''){
   // créer élément
@@ -47,6 +49,9 @@ export function addClassElement(elementId, elementClass = "collapse"){
   document.getElementById(elementId).classList.add(elementClass);
 }
 
+export function sample(array, number){
+  return array[Math.floor(Math.random()*array.length)];
+}
 
 function showTurn(){
   document.getElementById('turnNumber').className="";
