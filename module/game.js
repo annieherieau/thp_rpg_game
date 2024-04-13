@@ -117,13 +117,14 @@ export class Game {
     this.settings();
     this.watchStats();
     removeClassElement("colonne2", "invisible");
+    removeElement("gameplayHistory");
   }
 
   // début du tour
   startTurn() {
     if (!this.skipturn()){ return false};
     // effacer la div du turn
-    removeElement("gameplayHistory");
+    if (document.getElementById('gameplayHistory')){ removeElement("gameplayHistory")};
     // recréer la div du turn
     addElement(
       "",
@@ -249,11 +250,11 @@ export class Game {
     return play;
   }
 
-  // // Action de jeu de l'humain
-  humanPlay(player) {
-    // choix de la victime
-    this.selectAttack(player, this.selectVictim(player));
-  }
+  // // // Action de jeu de l'humain
+  // humanPlay(player) {
+  //   // choix de la victime
+  //   this.selectAttack(player, this.selectVictim(player));
+  // }
 
   // sélection de la victim (nom) (on ne peut le relier directement auxp players du Game)
   selectVictim(e) {
@@ -271,13 +272,7 @@ export class Game {
     if (!victim || this.player == victim || !victim) {
       alert("Choisis une victime");
     }
-    if (this.player.attacks(victim)) {
-      this.watchStats();
-      addClassElement("humanPlay", "collapse");
-      document.getElementById("victim").innerText = "Choisis ta victime";
-      this.playCount++;
-      this.playerTurn();
-    }
+    this.humanEndTurn(this.player.attacks(victim));
   }
 
   // Human special
@@ -286,10 +281,14 @@ export class Game {
     if (!victim || this.player == victim || !victim) {
       alert("Choisis une victime");
     }
-    if (this.player.specialAttack(victim)) {
+    this.humanEndTurn(this.player.specialAttack(victim));
+  }
+
+  humanEndTurn(attack){
+    if (attack) {
       this.watchStats();
-      document.getElementById("victim").innerText =  "Choisis ta victime";
       addClassElement("humanPlay", "collapse");
+      document.getElementById("victim").innerText = "Choisis ta victime";
       removeClassElement("skipTurnBtn", "invisible");
       this.playCount++;
       this.playerTurn();
@@ -309,7 +308,7 @@ export class Game {
     removeElement("ulStats");
     // créer le ul
     addElement("", "ul", "list-group", "divStats", "ulStats");
-  }
+    }
 
     // créer les li
     let liClass = "list-group-item list-group-item-action";
