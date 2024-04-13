@@ -16,6 +16,10 @@ export class Wizard extends Character {
     this.dmg_spe = 8; // damage for special attack
     this.mana_cost = 50; // mana cost for make special attack
     this.self_hp = 3; // hp plus : gain de vie du spécial
+    this.description = 'Nécromancien, voleur de vie';
+    this.statSimple = `hp: ${this.hp_max} - mana: ${this.mana_max} - dmg:  ${this.dmg}`;
+    this.statSpe1 = `${this.dmg_spe ? 'dmg: '+ this.dmg_spe : ''} - ${this.mana_cost ? 'mana: -'+ this.dmg_spe : ''} - ${this.self_hp ? 'hp: +'+ this.dmg_spe : ''}`;
+    this.statSpe2 = 'Nécromancie: +mana et +hp_max';
   }
 
   // voleur de vie

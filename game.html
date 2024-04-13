@@ -58,7 +58,7 @@
 
       <div class="row">
         <!-- COLONNE 1 -->
-        <div class="col-6">
+        <div class="col-6" style="min-width: 30rem">
           <!-- BOUTON -->
           <button
             onclick="launchApp()"
@@ -74,7 +74,7 @@
         <!-- fin COLONNE 1 -->
 
         <!-- COLONNE 2 -->
-        <div id="colonne2" class="col-6 invisible">
+        <div id="colonne2" class="col-6 invisible" style="min-width: 30rem">
           <button class="btn btn-lg btn-primary w-100 my-3">Joueurs</button>
           <!-- STATS -->
           <section id="stats">
@@ -110,6 +110,19 @@
           >
             Commencer
           </button>
+          <div
+            class="card characters text-white bg-dark m-1 p-0 border-secondary m-auto"
+            style="max-width: 30rem;"
+          >
+            <div class="card-header">Fighter</div>
+            <div class="card-body">
+              <h4 class="card-title">Combattant équilibré</h4>
+              <p class="card-text">hp: 12 - mana: 40 - dmg: 4</p>
+              <p class="card-text">
+                <strong>Dark Vision:</strong><br />
+                mana: 20 - dmg: 4 - bouclier 2 hp
+              </p>
+            </div>
         </div>
         <!-- fin COLONNE 2 -->
       </div>
