@@ -7,7 +7,7 @@ export class Fireball extends Character {
     super();
     this.player_name = playerName ? playerName : Fireball.playerName(); // nom du joueur
     this.class_name = Fireball.name;
-    this.hp_max = 10; //  health points maxi
+    this.hp_max = 15; //  health points maxi
     this.hp = this.hp_max; // health points
     this.mana_max = 200; // mana points maxi
     this.mana = this.mana_max; // mana points

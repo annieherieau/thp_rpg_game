@@ -7,7 +7,7 @@ export class Berzerker extends Character {
     super();
     this.player_name = playerName ? playerName : Berzerker.playerName(); // nom du joueur
     this.class_name = Berzerker.name;
-    this.hp_max = 8; //  health points maxi
+    this.hp_max = 15; //  health points maxi
     this.hp = this.hp_max; // health points
     this.mana_max = 0; // mana points maxi
     this.mana = this.mana_max; // mana points

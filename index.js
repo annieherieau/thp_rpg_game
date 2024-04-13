@@ -79,7 +79,7 @@ function showTurn() {
 // marque le input turn
 function hideTurn() {
   addClassElement('turnNumber');
-  document.getElementById("turnNumberInput").value = "-1";
+  document.getElementById("turnNumberInput").value = "-9999999";
 }
 
 function showPlayers(number = 1) {
@@ -92,15 +92,17 @@ function showPlayers(number = 1) {
       number = 1;
       break;
     default:
-      number = -1;
+      number = 0;
       break;
   }
 
-  for (let i = 1; i <= maxPlayers; i++) {
+  for (let i = 1; i < maxPlayers; i++) {
     if (i <= number) {
       document.getElementById(`player${i}`).className = "row";
+      document.getElementById(`name${i}`).required = true;
     } else {
       document.getElementById(`player${i}`).className = "collapse";
+      document.getElementById(`name${i}`).required = false;
     }
   }
 }
