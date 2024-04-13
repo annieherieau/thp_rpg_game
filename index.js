@@ -79,7 +79,7 @@ function showTurn() {
 // marque le input turn
 function hideTurn() {
   addClassElement('turnNumber');
-  document.getElementById("turnNumberInput").value = "-1";
+  document.getElementById("turnNumberInput").value = "-9999999";
 }
 
 function showPlayers(number = 1) {

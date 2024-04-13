@@ -13,11 +13,11 @@ export class Character {
   constructor(playerName) {
     this.player_name = playerName ? playerName : Character.playerName(); // nom du joueur
     this.class_name = Character.name;
-    this.death_hp = 20; // hp récupéré lors qu'on tue un adversaire
+    this.death_hp = 15; // hp récupéré lors qu'on tue un adversaire
     this.status = "playing";
-    this.hp_max = 15; //  health points maxi
+    this.hp_max = 50; //  health points maxi
     this.hp = this.hp_max; // health points
-    this.mana_max = 40; // mana points maxi
+    this.mana_max = 100; // mana points maxi
     this.mana = this.mana_max; // mana points
     this.dmg = 3; // damage for simple attack
     this.special = "Special Attack"; // special attack name
@@ -66,13 +66,21 @@ export class Character {
     }
     // si mana suffisant
     if (!this.checkMana()) {
-      addElement(`Mana insuffisant... attaque normale`, 'p', 'px-3 text-warning');
+      addElement(
+        `Mana insuffisant... attaque normale`,
+        "p",
+        "px-3 text-warning"
+      );
       this.attacks(victim);
       return false;
     }
 
     // Execution de l'attaque
-    addElement(`~~~ ! ${this.special.toUpperCase()} ! ~~~`, 'p', 'px-3 my-1 text-warning');
+    addElement(
+      `~~~ ! ${this.special.toUpperCase()} ! ~~~`,
+      "p",
+      "px-3 my-1 text-warning"
+    );
     // mana
     if (this.mana_cost) {
       this.#useMana(this.mana_cost);
@@ -103,11 +111,19 @@ export class Character {
   // Verifier si l'attaque est possible
   canAttack(victim) {
     if (victim.isDead()) {
-      addElement(`Attaque impossible: ${victim.player_name} est mort(e)`, 'p', 'px-3 text-warning');
+      addElement(
+        `Attaque impossible: ${victim.player_name} est mort(e)`,
+        "p",
+        "px-3 text-warning"
+      );
       return false;
     }
     if (this.isDead()) {
-      addElement(`Attaque impossible: ${this.player_name} est mort(e)`, 'p', 'px-3 text-warning');
+      addElement(
+        `Attaque impossible: ${this.player_name} est mort(e)`,
+        "p",
+        "px-3 text-warning"
+      );
       return false;
     }
     if (this == victim) {
@@ -152,7 +168,13 @@ export class Character {
     addElement(`${this.player_name} pert ${damage} pv => hp: ${this.hp}`);
 
     // verifier si mort
-    this.isDead() ? addElement(`${this.player_name} est mort !`, 'p', 'px-3 text-warning') : "";
+    this.isDead()
+      ? addElement(
+          `${this.player_name} est mort(e) !`,
+          "p",
+          "px-3 text-warning"
+        )
+      : "";
     return true;
   }
 

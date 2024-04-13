@@ -7,11 +7,11 @@ export class Monk extends Character {
     super();
     this.player_name = playerName ? playerName : Monk.playerName(); // nom du joueur
     this.class_name = Monk.name;
-    this.hp_max = 8; //  health points maxi
+    this.hp_max = 15; //  health points maxi
     this.hp = this.hp_max; // health points
     this.mana_max = 200; // mana points maxi
     this.mana = this.mana_max; // mana points
-    this.dmg = 2; // damage for simple attack
+    this.dmg = 3; // damage for simple attack
     this.special = "Heal"; // special attack name
     this.dmg_spe = 0; // damage for special attack
     this.mana_cost = 25; // mana cost for make special attack
