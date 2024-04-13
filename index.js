@@ -92,7 +92,7 @@ function showPlayers(number = 1) {
       number = 1;
       break;
     default:
-      number = -1;
+      number = 0;
       break;
   }
 
@@ -101,7 +101,7 @@ function showPlayers(number = 1) {
       document.getElementById(`player${i}`).className = "row";
       document.getElementById(`name${i}`).required = true;
     } else {
-      // document.getElementByID(`player${i}`).className = "collapse";
+      document.getElementById(`player${i}`).className = "collapse";
       document.getElementById(`name${i}`).required = false;
     }
   }
