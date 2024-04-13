@@ -12,6 +12,8 @@ import { addElement } from "../index.js";
 import { removeElement } from "../index.js";
 import { removeClassElement } from "../index.js";
 import { addClassElement } from "../index.js";
+import { displayElement } from "../index.js";
+import { sample } from "../index.js";
 
 // RPG GAME
 export class Game {
@@ -59,7 +61,7 @@ export class Game {
   //  ** SETTING * //
   settings() {
     this.numberOfPlayers = parseInt(getInput("nbreRadio")) ? parseInt(getInput("nbreRadio")) : this.numberOfPlayers; // initie le nombre de players
-    this.turnLeft = parseInt(getInput("turnNumberInput")) ? parseInt(getInput("turnNumberInput")) : this.turnLeft; // nombre de tours restants
+    this.turnLeft = parseInt(getInput("turnNumberInput")) ?  Math.abs(parseInt(getInput("turnNumberInput"))) : this.turnLeft; // nombre de tours restants
     this.combat = parseInt(getInput("combatRadio")) ? parseInt(getInput("combatRadio")) : this.combat; // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = this.setPlayers(this.numberOfPlayers); // players au départ de la partie
   }
@@ -92,10 +94,14 @@ export class Game {
 
   // nouveau joueur humain
   newHumanPlayer(number = 1) {
+    // Classe par défaut si pas d'input
+    let inputClass = getInput(`class${number}`) ? getInput(`class${number}`) : sample(Game.defaultPlayers).class.name;
+    let inputName = getInput(`name${number}`) ? getInput(`name${number}`) : sample(Game.defaultPlayers).player;
+    
     let playerClass = Game.defaultPlayers.find(
-      (p) => p.class.name == getInput(`class${number}`)
+      (p) => p.class.name == inputClass
     ).class;
-    let player = new playerClass(getInput(`name${number}`));
+    let player = new playerClass(inputName);
     // nom par défaut si vide
     if (!player.player_name) {
       player.player_name = playerClass.playerName();
@@ -111,13 +117,14 @@ export class Game {
     this.settings();
     this.watchStats();
     removeClassElement("colonne2", "invisible");
+    removeElement("gameplayHistory");
   }
 
   // début du tour
   startTurn() {
     if (!this.skipturn()){ return false};
     // effacer la div du turn
-    removeElement("gameplayHistory");
+    if (document.getElementById('gameplayHistory')){ removeElement("gameplayHistory")};
     // recréer la div du turn
     addElement(
       "",
@@ -139,6 +146,7 @@ export class Game {
   // Tour du joueur
   playerTurn() {
     let auto = true;
+    
     while (auto) {
       if (this.players[this.playCount]) {
         this.player = this.players[this.playCount];
@@ -156,6 +164,7 @@ export class Game {
             this.playCount++;
           } else {
             // human input ( boutons )
+            document.getElementById('specialAttack').innerText = this.player.special;
             removeClassElement("humanPlay", "collapse");
             addClassElement("skipTurnBtn", "invisible");
             auto = false;
@@ -241,11 +250,11 @@ export class Game {
     return play;
   }
 
-  // // Action de jeu de l'humain
-  humanPlay(player) {
-    // choix de la victime
-    this.selectAttack(player, this.selectVictim(player));
-  }
+  // // // Action de jeu de l'humain
+  // humanPlay(player) {
+  //   // choix de la victime
+  //   this.selectAttack(player, this.selectVictim(player));
+  // }
 
   // sélection de la victim (nom) (on ne peut le relier directement auxp players du Game)
   selectVictim(e) {
@@ -263,13 +272,7 @@ export class Game {
     if (!victim || this.player == victim || !victim) {
       alert("Choisis une victime");
     }
-    if (this.player.attacks(victim)) {
-      this.watchStats();
-      addClassElement("humanPlay", "collapse");
-      document.getElementById("victim").innerText = "Choisis ta victime";
-      this.playCount++;
-      this.playerTurn();
-    }
+    this.humanEndTurn(this.player.attacks(victim));
   }
 
   // Human special
@@ -278,10 +281,14 @@ export class Game {
     if (!victim || this.player == victim || !victim) {
       alert("Choisis une victime");
     }
-    if (this.player.specialAttack(victim)) {
+    this.humanEndTurn(this.player.specialAttack(victim));
+  }
+
+  humanEndTurn(attack){
+    if (attack) {
       this.watchStats();
-      document.getElementById("victim").innerText =  "Choisis ta victime";
       addClassElement("humanPlay", "collapse");
+      document.getElementById("victim").innerText = "Choisis ta victime";
       removeClassElement("skipTurnBtn", "invisible");
       this.playCount++;
       this.playerTurn();
@@ -295,19 +302,21 @@ export class Game {
   }
 
   // Affichage des stats
-  watchStats(players = this.playersLeft) {
+  watchStats(players = this.playersLeft, debug=false) {
+    if (!debug) {
     // enlever le ul
     removeElement("ulStats");
     // créer le ul
     addElement("", "ul", "list-group", "divStats", "ulStats");
+    }
 
     // créer les li
     let liClass = "list-group-item list-group-item-action";
-
+    let ulClass = debug ? 'ulDebug' : 'ulStats';
     let ai = "";
     for (let player of players) {
       let text = `${player.player_name} (${player.class_name}) : hp = ${player.hp}/${player.hp_max} | mana = ${player.mana}/${player.mana_max}`;
-      addElement(text, "li", liClass, "ulStats", player.player_name);
+      addElement(text, "li", liClass, ulClass, player.player_name);
     }
     // ajouter event Listener : la fonction au click
     let liVictims = document.getElementsByClassName("list-group-item-action");
@@ -327,5 +336,18 @@ export class Game {
     });
 
     return victims;
+  }
+
+  debug(){
+    this.settings();
+    this.watchStats(this.players, true);
+    displayElement('constructor', Game.name);
+    displayElement('minPlayers', Game.minPlayers);
+    displayElement('maxPlayers', Game.maxPlayers);
+    displayElement('defaultPlayers.length', Game.defaultPlayers.length);
+    displayElement('numberOfPlayers', this.numberOfPlayers);
+    displayElement('turnLeft', this.turnLeft);
+    displayElement('combat', this.combat);
+    
   }
 }

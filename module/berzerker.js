@@ -24,8 +24,7 @@ export class Berzerker extends Character {
         addElement(
           `${this.special} impossible: ${this.player_name} va se se tuer !! attaque simple...`
         );
-        super.attacks(victim);
-        return false;
+        return super.attacks(victim);
       }
       this.hp -= 1;
       this.dmg += 1;
