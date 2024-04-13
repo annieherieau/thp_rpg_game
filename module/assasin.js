@@ -20,7 +20,7 @@ export class Assassin extends Character {
     this.description = 'Renard rusé et fourbe';
     this.statSimple = `hp: ${this.hp_max} - mana: ${this.mana_max} - dmg:  ${this.dmg}`;
     this.statSpe1 = `${this.dmg_spe ? 'dmg: '+ this.dmg_spe : ''} - ${this.mana_cost ? 'mana: -'+ this.dmg_spe : ''} - ${this.self_hp ? 'hp: +'+ this.dmg_spe : ''}`;
-    this.statSpe2 = 'bouclier 100%';
+    this.statSpe2 = 'Shadow Shield: bouclier 100%';
   }
   // activation du ShadowShield
   specialAttack(victim) {

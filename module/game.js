@@ -169,6 +169,7 @@ export class Game {
           );
           // Ai joue automatiquement
           if (this.player.ai) {
+            addClassElement("playerCard", "collapse");
             this.aiPlay(this.player);
             this.watchStats();
             this.playCount++;
@@ -184,6 +185,8 @@ export class Game {
             }
             removeClassElement("humanPlay", "collapse");
             addClassElement("skipTurnBtn", "invisible");
+            removeClassElement("playerCard", "collapse");
+            playerCard(player);
             auto = false;
           }
         } else {
@@ -272,6 +275,7 @@ export class Game {
     return this.leftPlayers().find((v) => v.player_name == victimName);
   }
 
+  // Human simple
   simpleAttack() {
     let victim = this.findVictim();
     if (!victim || this.player == victim || !victim) {
@@ -289,6 +293,7 @@ export class Game {
     this.humanEndTurn(this.player.specialAttack(victim));
   }
 
+  // fin du tour human
   humanEndTurn(attack){
     if (attack) {
       this.watchStats(this.leftPlayers());
@@ -334,6 +339,14 @@ export class Game {
     }
   }
 
+  playerCard(player){
+    displayElement('description'. player.description);
+    displayElement('class_name'. player.class_name);
+    displayElement('statSimple'. player.statSimple);
+    displayElement('special'. player.special);
+    displayElement('statSpe1'. player.statSpe1);
+    displayElement('statSpe2'. player.statSpe2);
+  }
 
   // sélection des victimes disponibles
   victims(player) {
