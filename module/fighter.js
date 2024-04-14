@@ -19,9 +19,7 @@ export class Fighter extends Character {
     this.visionShield = false;
     this.shield = 2;
     this.description = 'Combattant équilibré';
-    this.statSimple = `hp: ${this.hp_max} - mana: ${this.mana_max} - dmg:  ${this.dmg}`;
-    this.statSpe1 = `${this.dmg_spe ? 'dmg: '+ this.dmg_spe : ''} - ${this.mana_cost ? 'mana: -'+ this.dmg_spe : ''} - ${this.self_hp ? 'hp: +'+ this.dmg_spe : ''}`;
-    this.statSpe2 = 'Vision Shield: bouclier -2 dmg';
+    this.statSpe = 'Vision Shield: bouclier -2 dmg';
   }
 
   // DARK VISION : au prochain tour 2 dégats de moins par coup reçu (?)

@@ -72,6 +72,11 @@ export function addClassElement(elementId, elementClass = "collapse") {
 export function sample(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
+
+// modifier innerHtml
+export function changeInnerHTML(textHtml, elementId){
+  return document.getElementById(elementId).innerHTML += textHtml;
+}
 // afficher le input turn
 function showTurn() {
   removeClassElement("turnNumber");

@@ -14,6 +14,7 @@ import { removeClassElement } from "../index.js";
 import { addClassElement } from "../index.js";
 import { changeInnerText } from "../index.js";
 import { sample } from "../index.js";
+import { changeInnerHTML } from "../index.js";
 
 // RPG GAME
 export class Game {
@@ -96,7 +97,7 @@ export class Game {
     return Game.#shuffle(players);
   }
 
-  // nouveau joueur humain
+  // créer un nouveau joueur humain
   newHumanPlayer(number = 1) {
     // Classe par défaut si pas d'input
     let inputClass = getInput(`class${number}`)
@@ -192,7 +193,7 @@ export class Game {
             removeClassElement("humanPlay", "collapse");
             addClassElement("skipTurnBtn", "invisible");
             removeClassElement("playerCard", "collapse");
-            playerCard(player);
+            this.playerCard(this.player);
             auto = false;
           }
         } else {
@@ -285,7 +286,7 @@ export class Game {
     return this.leftPlayers().find((v) => v.player_name == victimName);
   }
 
-  // Human simple
+  // Human simple attack
   simpleAttack() {
     let victim = this.findVictim();
     if (!victim || this.player == victim || !victim) {
@@ -294,7 +295,7 @@ export class Game {
     this.humanEndTurn(this.player.attacks(victim));
   }
 
-  // Human special
+  // Human special attack
   specialAttack() {
     let victim = this.findVictim();
     if (!victim || this.player == victim || !victim) {
@@ -354,12 +355,14 @@ export class Game {
   }
 
   playerCard(player) {
-    changeInnerText("description".player.description);
-    changeInnerText("class_name".player.class_name);
-    changeInnerText("statSimple".player.statSimple);
-    changeInnerText("special".player.special);
-    changeInnerText("statSpe1".player.statSpe1);
-    changeInnerText("statSpe2".player.statSpe2);
+    changeInnerText("description", player.description);
+    changeInnerText("class_name", player.class_name);
+    let text = `hp: ${player.hp_max} - mana: ${player.mana_max} - dmg:  ${player.dmg}`;
+    changeInnerText("statSimple", text); 
+    text = [`${player.dmg_spe ? 'dmg: '+ player.dmg_spe : ''}`, `${player.mana_cost ? 'mana: -'+ player.dmg_spe : ''}`, `${player.self_hp ? 'hp: +'+ player.dmg_spe : ''}`];
+    let textHtml = `<strong>${player.special}</strong>:<br />
+    ${text.join(' - ')}<br>${player.statSpe}`;
+    changeInnerHTML(textHtml, 'special'); 
   }
 
   // sélection des victimes disponibles

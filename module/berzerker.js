@@ -17,9 +17,7 @@ export class Berzerker extends Character {
     this.mana_cost = 0; // mana cost for make special attack
     this.self_hp = 0; // hp plus : gain de vie du spécial
     this.description = 'Bourrin et grosse attaque';
-    this.statSimple = `hp: ${this.hp_max} - mana: ${this.mana_max} - dmg:  ${this.dmg}`;
-    this.statSpe1 = `${this.dmg_spe ? 'dmg: '+ this.dmg_spe : ''} - ${this.mana_cost ? 'mana: -'+ this.dmg_spe : ''} - ${this.self_hp ? 'hp: +'+ this.dmg_spe : ''}`;
-    this.statSpe2 = 'dmg: dmg+1 - hp: hp-1';
+    this.statSpe = 'dmg: dmg+1 - hp: hp-1';
   }
 
   specialAttack(victim) {
