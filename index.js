@@ -33,7 +33,8 @@ export function removeElement(elementId) {
   document.getElementById(elementId).remove();
 }
 
-export function displayElement(elementId, innerText) {
+// changer le text d'un élément existant
+export function changeInnerText(elementId, innerText) {
   document.getElementById(elementId).innerText = innerText;
 }
 // ajoute un Dom Element dans le Dom
@@ -67,21 +68,22 @@ export function addClassElement(elementId, elementClass = "collapse") {
   document.getElementById(elementId).classList.add(elementClass);
 }
 
-// renvoie une valeur rzndom du tableau
+// renvoie une valeur random du tableau
 export function sample(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 // afficher le input turn
 function showTurn() {
-  removeClassElement('turnNumber');
+  removeClassElement("turnNumber");
   document.getElementById("turnNumberInput").value = "10";
 }
 // marque le input turn
 function hideTurn() {
-  addClassElement('turnNumber');
+  addClassElement("turnNumber");
   document.getElementById("turnNumberInput").value = "-9999999";
 }
 
+// affiche les joueurs
 function showPlayers(number = 1) {
   let maxPlayers = document.getElementsByName("nbreRadio").length + 1;
   switch (radioChecked("combatRadio")) {
