@@ -1,6 +1,6 @@
 /* Formulaires */
 .required:after { 
-  color:  rgba(var(--bs-secondary-rgb));
+  color:  fuchsia;
   content: "*";
   position: relative;
 }
