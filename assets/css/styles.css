@@ -28,16 +28,7 @@
 .playerCard{
   max-width: 30rem;
 }
-#topBtn{
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  position: fixed;
-  bottom: 1em;
-  right: 1em;
-  visibility: hidden;
-  z-index: 1000;
-}
+
 @media only screen and (max-width: 430px){
   #colonne1, #collone2{
     min-width: 23rem;
