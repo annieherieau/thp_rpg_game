@@ -25,7 +25,7 @@ export class Fighter extends Character {
   // DARK VISION : au prochain tour 2 dégats de moins par coup reçu (?)
   // activation du visionShield
   specialAttack(victim) {
-      if (this.checkMana()) {
+      if (this.checkMana() && victim != this) {
         this.visionShield = true;
         addElement(`VisionShied activé`);
       }

@@ -147,7 +147,7 @@ export class Game {
     addElement("", "div", "p-3", "gameplaySection", "gameplayHistory");
 
     // Affichage des états des joueurs
-    this.watchStats();
+    // this.watchStats();
     this.playCount = 0;
     if (this.isOver()) {
       this.endGame();
@@ -177,7 +177,7 @@ export class Game {
           );
           // Ai joue automatiquement
           if (this.player.ai) {
-            addClassElement("playerCard", "collapse");
+            this.humanDisplay(false);
             this.aiPlay(this.player);
             this.watchStats();
             this.playCount++;
@@ -185,32 +185,46 @@ export class Game {
               changeInnerText("skipTurnBtn", "Voir le classement");
             }
           } else {
-            // human input ( boutons )
-            document.getElementById("specialAttack").innerText =
-              this.player.special;
-            if (this.leftPlayers().length == 2) {
-              let victim = this.leftPlayers().find((p) => p != this.player);
-              changeInnerText("victim", victim.player_name);
-            }
-            removeClassElement("humanPlay", "collapse");
-            addClassElement("skipTurnDiv", "collapse");
-            removeClassElement("playerCard", "collapse");
-            this.playerCard(this.player);
-            if (this.player.mana < this.player.mana_cost) {
-              addClassElement("specialAttackDiv", "collapse");
-            }else{
-              removeClassElement("specialAttackDiv", "collapse");
-            }
+            // Affichage human
+            this.humanDisplay();
             auto = false;
           }
         } else {
           this.playCount++;
         }
       } else {
-        this.player = "";
+        this.player = null;
         auto = false;
       }
     }
+  }
+
+  humanDisplay(display=true) {
+    if (display){
+    // retirer le bouton tour suivant
+    addClassElement("skipTurnDiv", "collapse");
+
+    // victime sélectionnée auto si 2 joueurs restants
+    if (this.leftPlayers().length == 2) {
+      let victim = this.leftPlayers().find((p) => p != this.player);
+      changeInnerText("victim", victim.player_name);
+    }
+
+    // retirer le spacial si mana insuffisant
+    if (this.player.mana < this.player.mana_cost) {
+      addClassElement("specialAttackDiv", "collapse");
+    } else {
+      removeClassElement("specialAttackDiv", "collapse");
+    }
+    document.getElementById("specialAttack").innerText = this.player.special;
+    this.playerCard(this.player);
+    // afficher la carte joueur
+    removeClassElement("playerCard", "collapse");
+    }else{
+      removeClassElement("skipTurnDiv", "collapse");
+      addClassElement("playerCard", "collapse");
+    }
+  
   }
 
   // Passage au tour suivant
@@ -258,9 +272,7 @@ export class Game {
       })${player.hp ? " - hp: " + player.hp : ""}`;
       addElement(text, "li", "list-group-item", "olWinnners");
     });
-
-    addClassElement("skipTurnDiv", "collapse");
-    addClassElement("humanPlay", "collapse");
+    this.humanDisplay(false);
     removeClassElement("winners", "collapse");
 
     this.watchStats();
@@ -284,14 +296,14 @@ export class Game {
 
   // sélection de la victim (nom) (on ne peut le relier directement auxp players du Game)
   selectVictim(e) {
-    let victimName = document.getElementById("victim").innerText == '';
-    // enlever les li actifs
-    let listItems = document.getElementsByClassName('list-group-item');
+    let victimName = document.getElementById("victim").innerText == "";
+    // enlever les li actifs et déactiver le joueur
+    let listItems = document.getElementsByClassName("list-group-item");
     for (let i = 0; i < listItems.length; i++) {
-      removeClassElement(listItems[i].id, 'active');
+      removeClassElement(listItems[i].id, "active");
     }
     // actifs
-    addClassElement(e.target.id, 'active');
+    addClassElement(e.target.id, "active");
     return (document.getElementById("victim").innerText = e.target.id);
   }
 
@@ -356,6 +368,7 @@ export class Game {
     }
 
     // créer les li
+    
     let liClass = "list-group-item list-group-item-action";
     let ulClass = debug ? "ulDebug" : "ulStats";
     let ai = "";
@@ -370,15 +383,26 @@ export class Game {
     }
   }
 
+  // Carte du joueur
   playerCard(player) {
     changeInnerText("description", player.description);
-    changeInnerText("class_name", `${player.class_name} - ${player.player_name}`);
+    changeInnerText(
+      "class_name",
+      `${player.class_name} - ${player.player_name}`
+    );
     let text = `hp: ${player.hp_max} - mana: ${player.mana_max} - dmg:  ${player.dmg}`;
-    changeInnerText("statSimple", text); 
-    text = [`${player.dmg_spe ? 'dmg: '+ player.dmg_spe : ''}`, `${player.mana_cost ? 'mana: -'+ player.dmg_spe : ''}`, `${player.self_hp ? 'hp: +'+ player.dmg_spe : ''}`];
+    changeInnerText("statSimple", text);
+    text = [
+      `${player.dmg_spe ? "dmg: " + player.dmg_spe : ""}`,
+      `${player.mana_cost ? "mana: -" + player.dmg_spe : ""}`,
+      `${player.self_hp ? "hp: +" + player.dmg_spe : ""}`,
+    ];
     let textHtml = `<strong>${player.special}</strong>:<br />
-    ${text.join(' - ')}<br>${player.statSpe}`;
-    changeInnerHTML(textHtml, 'special'); 
+    ${text.join(" - ")}<br>${player.statSpe}`;
+    changeInnerHTML(textHtml, "special");
+
+    // Bouton spécial
+    document.getElementById("specialAttack").innerText = this.player.special;
   }
 
   // sélection des victimes disponibles
