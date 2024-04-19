@@ -1,6 +1,3 @@
-/* bootwatch */
-@import url(https://cdn.jsdelivr.net/npm/bootswatch@5/dist/vapor/bootstrap.min.css);
-
 /* Formulaires */
 .required:after { 
   color:  rgba(var(--bs-secondary-rgb));
