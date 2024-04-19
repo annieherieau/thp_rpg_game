@@ -26,9 +26,7 @@ export class Character {
     this.self_hp = 0; // hp plus : gain de vie du spécial
     this.ai = true; // Player AI
     this.description = 'Un Peronnage de base';
-    this.statSimple = `hp: ${this.hp_max} - mana: ${this.mana_max} - dmg:  ${this.dmg}`;
-    this.statSpe1 = `${this.dmg_spe ? 'dmg: '+ this.dmg_spe : ''} - ${this.mana_cost ? 'mana: -'+ this.dmg_spe : ''} - ${this.self_hp ? 'hp: +'+ this.dmg_spe : ''}`;
-    this.statSpe2 = '';
+    this.statSpe = '';
     this.descriptionSpe ='';
   }
 
