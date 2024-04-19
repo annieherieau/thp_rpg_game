@@ -18,9 +18,7 @@ export class Assassin extends Character {
     this.self_hp = 0; // hp plus : gain de vie du spécial
     this.shadowShield = false; // déclenché par Special: ne prend pas de dégât au tours suivant
     this.description = 'Renard rusé et fourbe';
-    this.statSimple = `hp: ${this.hp_max} - mana: ${this.mana_max} - dmg:  ${this.dmg}`;
-    this.statSpe1 = `${this.dmg_spe ? 'dmg: '+ this.dmg_spe : ''} - ${this.mana_cost ? 'mana: -'+ this.dmg_spe : ''} - ${this.self_hp ? 'hp: +'+ this.dmg_spe : ''}`;
-    this.statSpe2 = 'Shadow Shield: bouclier 100%';
+    this.statSpe = 'Shadow Shield: bouclier 100%';
   }
   // activation du ShadowShield
   specialAttack(victim) {

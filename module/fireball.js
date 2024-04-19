@@ -17,7 +17,5 @@ export class Fireball extends Character {
     this.mana_cost = 25; // mana cost for make special attack
     this.self_hp = 0; // hp plus : gain de vie du spécial
     this.description = 'Boule de feu et de nerfs';
-    this.statSimple = `hp: ${this.hp_max} - mana: ${this.mana_max} - dmg:  ${this.dmg}`;
-    this.statSpe1 = `${this.dmg_spe ? 'dmg: '+ this.dmg_spe : ''} - ${this.mana_cost ? 'mana: -'+ this.dmg_spe : ''} - ${this.self_hp ? 'hp: +'+ this.dmg_spe : ''}`;
   }
 }
