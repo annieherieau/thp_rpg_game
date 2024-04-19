@@ -55,12 +55,15 @@
       </nav>
     </header>
 
+        <!-- Back to top button -->
+        <!-- <a id="topBtn" class="btn btn-sm btn-primary">Top</a> -->
+
     <main class="container mb-5">
       <h1 class="mt-5 mb-3">RPG Game Js</h1>
 
       <div class="row">
         <!-- COLONNE 1 -->
-        <div class="col-6" style="min-width: 30rem">
+        <div id="colonne1" class="col-6">
           <!-- BOUTON -->
           <button
             onclick="launchApp()"
@@ -77,8 +80,7 @@
             </div>
             <!-- Player Card -->
             <div id="playerCard"
-            class="card characters text-white bg-dark mt-3 p-0 border-primary m-auto collapse"
-            style="max-width: 30rem;"
+            class="card characters text-white bg-dark mt-3 p-2 border-primary m-auto collapse"
           >
             <div id="description" class="card-header"></div>
             <div class="card-body">
@@ -87,10 +89,10 @@
               <p class="card-text" id="special"></p>
             </div>
             <!-- BOUTON ACTION HUMAN PLAYER -->
-            <div id="humanPlay" class="d-flex justify-content-between p-2 collapse">
-              <button id="victim" class="btn btn-outline-primary my-1 collapse">
-                Victime ?
-              </button>
+              <div id="victim" class="card border-primary m-1 p-2 text-center text-white">
+                Choisi ta victime dans la liste
+              </div>
+            <div id="humanPlay" class="d-flex justify-content-between">
               <div class="m-1 w-50">
                 <button
                 onclick="rpgGame.simpleAttack();"
@@ -125,7 +127,7 @@
         <!-- fin COLONNE 1 -->
 
         <!-- COLONNE 2 -->
-        <div id="colonne2" class="col-6 collapse" style="min-width: 30rem">
+        <div id="colonne2" class="col-6 collapse">
           <!-- GAMEPLAY -->
           <section id="gameplaySection" class="">
             <div id="gameplayHistory" class=""></div>

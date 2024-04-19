@@ -5,6 +5,9 @@
   position: relative;
 }
 
+#colonne1, #collone2{
+  min-width: 27rem;
+}
 #playerCard h3{
   text-shadow: none;
   color: var(--bs-body-color);
@@ -17,5 +20,41 @@
 #gameplaySection h3{
   color: var(--bs-body-color);
 }
+
+#victim {
+ transition: none;
+}
+
+.playerCard{
+  max-width: 30rem;
+}
+#topBtn{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  visibility: hidden;
+  z-index: 1000;
+}
+@media only screen and (max-width: 430px){
+  #colonne1, #collone2{
+    min-width: 23rem;
+  }
+
+  footer div{
+    width: 100%;
+  }
+
+  .col-6{
+    width: 100%;
+  }
+
+  #topBtn{
+    visibility: visible;
+  }
+}
+
 
 

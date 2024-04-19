@@ -53,7 +53,7 @@ export class Game {
     this.turnCount = 0;
     this.combat = 2; // Combat : 1. players vs players | 2. one player vs AI | 3. AI vs AI
     this.players = players; // players au départ de la partie
-    this.player = ""; // joueur qui est en train de jouer
+    this.player = null; // joueur qui est en train de jouer
     this.playCount = 0; // count des tour de joueurs
     this.losers = []; // joueur dans l'ordre de leur mort
   }
@@ -193,7 +193,7 @@ export class Game {
               changeInnerText("victim", victim.player_name);
             }
             removeClassElement("humanPlay", "collapse");
-            addClassElement("skipTurnBtn", "invisible");
+            addClassElement("skipTurnDiv", "collapse");
             removeClassElement("playerCard", "collapse");
             this.playerCard(this.player);
             if (this.player.mana < this.player.mana_cost) {
@@ -259,7 +259,7 @@ export class Game {
       addElement(text, "li", "list-group-item", "olWinnners");
     });
 
-    addClassElement("skipTurnBtn", "invisible");
+    addClassElement("skipTurnDiv", "collapse");
     addClassElement("humanPlay", "collapse");
     removeClassElement("winners", "collapse");
 
@@ -284,6 +284,14 @@ export class Game {
 
   // sélection de la victim (nom) (on ne peut le relier directement auxp players du Game)
   selectVictim(e) {
+    let victimName = document.getElementById("victim").innerText == '';
+    // enlever les li actifs
+    let listItems = document.getElementsByClassName('list-group-item');
+    for (let i = 0; i < listItems.length; i++) {
+      removeClassElement(listItems[i].id, 'active');
+    }
+    // actifs
+    addClassElement(e.target.id, 'active');
     return (document.getElementById("victim").innerText = e.target.id);
   }
 
@@ -297,7 +305,7 @@ export class Game {
   simpleAttack() {
     let victim = this.findVictim();
     if (!victim || this.player == victim || !victim) {
-      alert("Choisis une victime");
+      document.getElementById("victim").innerText = "Choisis une victime";
     }
     this.humanEndTurn(this.player.attacks(victim));
   }
@@ -306,22 +314,23 @@ export class Game {
   specialAttack() {
     let victim = this.findVictim();
     if (!victim || this.player == victim || !victim) {
-      alert("Choisis une victime");
+      document.getElementById("victim").innerText = "Choisis une victime";
     }
     this.humanEndTurn(this.player.specialAttack(victim));
   }
 
   // fin du tour human
   humanEndTurn(attack) {
+    document.getElementById("victim").innerText = "Choisis ta victime";
     if (attack) {
       this.watchStats(this.leftPlayers());
       addClassElement("playerCard", "collapse");
-      document.getElementById("victim").innerText = "Choisis ta victime";
-      removeClassElement("skipTurnBtn", "invisible");
+      removeClassElement("skipTurnDiv", "collapse");
       if (this.leftPlayers().length == 1) {
-        addClassElement("skipTurnBtn", "invisible");
+        addClassElement("skipTurnDiv", "collapse");
       }
       this.playCount++;
+      document.getElementById("victim").innerText = "Choisis ta victime";
       this.playerTurn();
     }
   }

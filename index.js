@@ -113,3 +113,12 @@ function showPlayers(number = 1) {
     }
   }
 }
+
+const btn = $('#topBtn');
+
+btn.on('click', function(e) {
+  e.preventDefault();
+  $('html, body').animate({scrollTop:0}, '300');
+});
+
+
