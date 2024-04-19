@@ -4,3 +4,18 @@
   content: "*";
   position: relative;
 }
+
+#playerCard h3{
+  text-shadow: none;
+  color: var(--bs-body-color);
+}
+
+#gameplaySection{
+  text-shadow: none;
+  color : white;
+}
+#gameplaySection h3{
+  color: var(--bs-body-color);
+}
+
+

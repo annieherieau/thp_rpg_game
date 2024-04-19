@@ -34,6 +34,7 @@ export class Character {
   // lancer une attaque
   attacks(victim, damage = this.dmg) {
     // verifier si l'attaque est possible
+    if(!victim){return false}
     if (this.canAttack(victim)) {
       // OUI
       addElement(`${this.player_name} attaque ${victim.player_name}`);
@@ -64,6 +65,7 @@ export class Character {
   // si mana insuffisant: attaque normale (false)
   specialAttack(victim) {
     // conditions d'attaque
+    if(!victim){return false}
     if (!this.canAttack(victim)) {
       return undefined;
     }

@@ -125,10 +125,12 @@ export class Game {
   startGame() {
     this.settings();
     this.watchStats();
-    removeClassElement("colonne2", "invisible");
+    removeClassElement("colonne2", "collapse");
+    removeClassElement("divStats", "collapse");
     addClassElement("winners", "collapse");
+    addClassElement("playerCard", "collapse");
     removeElement("gameplayHistory");
-    removeClassElement("skipTurnBtn", "invisible");
+    removeClassElement("skipTurnDiv", "collapse");
     changeInnerText("skipTurnBtn", "Commencer");
   }
 
@@ -194,6 +196,11 @@ export class Game {
             addClassElement("skipTurnBtn", "invisible");
             removeClassElement("playerCard", "collapse");
             this.playerCard(this.player);
+            if (this.player.mana < this.player.mana_cost) {
+              addClassElement("specialAttackDiv", "collapse");
+            }else{
+              removeClassElement("specialAttackDiv", "collapse");
+            }
             auto = false;
           }
         } else {
@@ -308,7 +315,7 @@ export class Game {
   humanEndTurn(attack) {
     if (attack) {
       this.watchStats(this.leftPlayers());
-      addClassElement("humanPlay", "collapse");
+      addClassElement("playerCard", "collapse");
       document.getElementById("victim").innerText = "Choisis ta victime";
       removeClassElement("skipTurnBtn", "invisible");
       if (this.leftPlayers().length == 1) {
@@ -356,7 +363,7 @@ export class Game {
 
   playerCard(player) {
     changeInnerText("description", player.description);
-    changeInnerText("class_name", player.class_name);
+    changeInnerText("class_name", `${player.class_name} - ${player.player_name}`);
     let text = `hp: ${player.hp_max} - mana: ${player.mana_max} - dmg:  ${player.dmg}`;
     changeInnerText("statSimple", text); 
     text = [`${player.dmg_spe ? 'dmg: '+ player.dmg_spe : ''}`, `${player.mana_cost ? 'mana: -'+ player.dmg_spe : ''}`, `${player.self_hp ? 'hp: +'+ player.dmg_spe : ''}`];

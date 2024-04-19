@@ -75,7 +75,7 @@ export function sample(array) {
 
 // modifier innerHtml
 export function changeInnerHTML(textHtml, elementId){
-  return document.getElementById(elementId).innerHTML += textHtml;
+  return document.getElementById(elementId).innerHTML = textHtml;
 }
 // afficher le input turn
 function showTurn() {
